@@ -112,7 +112,7 @@ const login = async () => {
                   placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   autocomplete="password"
-                  :append-inner-icon="isPasswordVisible ? 'bx-hide' : 'bx-show'"
+                  :append-inner-icon="isPasswordVisible ? 'bi-eye-slash' : 'bi-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
 

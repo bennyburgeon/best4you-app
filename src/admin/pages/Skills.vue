@@ -68,7 +68,7 @@ onMounted(fetchSkills)
     <VCol cols="12">
       <VCard title="Master Skills" subtitle="Manage key skills for job postings">
         <template #append v-if="hasPermission('create skills')">
-          <VBtn color="primary" prepend-icon="bx-plus" @click="dialog = true">Add Skill</VBtn>
+          <VBtn color="primary" prepend-icon="bi-plus" @click="dialog = true">Add Skill</VBtn>
         </template>
 
         <VCardText>
@@ -86,12 +86,10 @@ onMounted(fetchSkills)
             </template>
 
             <template #item.actions="{ item }">
-              <VBtn v-if="hasPermission('edit skills')" icon size="small" variant="text" color="info" @click="editItem(item)">
-                <VIcon icon="bx-edit" />
-              </VBtn>
-              <VBtn v-if="hasPermission('delete skills')" icon size="small" variant="text" color="error" @click="deleteItem(item)">
-                <VIcon icon="bx-trash" />
-              </VBtn>
+              <div class="d-flex gap-2 justify-end">
+                <VBtn v-if="hasPermission('edit skills')" size="small" variant="tonal" color="info" prepend-icon="bi-pencil-square" @click="editItem(item)">Edit</VBtn>
+                <VBtn v-if="hasPermission('delete skills')" size="small" variant="tonal" color="error" prepend-icon="bi-trash" @click="deleteItem(item)">Delete</VBtn>
+              </div>
             </template>
           </VDataTable>
         </VCardText>

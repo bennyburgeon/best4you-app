@@ -7,15 +7,18 @@ const { hasPermission } = useAuth();
 
 const jobs = ref([]);
 const categories = ref([]);
+const industryTypes = ref([]);
 const skills = ref([]);
 const loading = ref(false);
 const dialog = ref(false);
 
 const editedItem = ref({
     id: null,
+    job_code: '',
     title: '',
     company: '',
     client_id: null,
+    industry_type_id: null,
     location: '',
     salary: '',
     salary_from: null,
@@ -27,6 +30,9 @@ const editedItem = ref({
     roles_and_responsibility: '',
     hr_incharge: '',
     email: '',
+    opening_date: null,
+    closing_date: null,
+    gender_preference: '',
     skills: []
 });
 
@@ -36,13 +42,20 @@ const clientsList = ref([]);
 const fetchJobs = async () => {
     loading.value = true;
     try {
-        const response = await axios.get('/jobs');
+        const response = await axios.get('/jobs?all=1');
         jobs.value = response.data;
     } catch (e) {
         console.error(e);
     } finally {
         loading.value = false;
     }
+}
+
+const fetchIndustryTypes = async () => {
+    try {
+        const response = await axios.get('/industry-types');
+        industryTypes.value = response.data;
+    } catch (e) { console.error(e); }
 }
 
 const fetchCategories = async () => {
@@ -78,11 +91,12 @@ const openDialog = (item = null) => {
         };
     } else {
         editedItem.value = { 
-            id: null, title: '', company: '', location: '', salary: '', 
-            salary_from: null, salary_to: null, currency_id: null,
+            id: null, job_code: '', title: '', company: '', location: '', salary: '', 
+            salary_from: null, salary_to: null, currency_id: null, industry_type_id: null,
             experience_min: null, experience_max: null, client_id: null,
             job_category_id: null, roles_and_responsibility: '', 
-            hr_incharge: '', email: '', skills: [] 
+            hr_incharge: '', email: '', opening_date: null, closing_date: null,
+            gender_preference: '', skills: [] 
         };
     }
     dialog.value = true;
@@ -118,6 +132,7 @@ const deleteItem = async (id) => {
 onMounted(() => {
     fetchJobs();
     fetchCategories();
+    fetchIndustryTypes();
     fetchSkills();
     fetchCurrenciesAndClients();
 });
@@ -128,33 +143,34 @@ onMounted(() => {
     <VCol cols="12">
       <VCard title="Live Vacancies" subtitle="Management of active job listings">
         <template #append v-if="hasPermission('create jobs')">
-          <VBtn prepend-icon="bx-briefcase" @click="openDialog()">Post New Job</VBtn>
+          <VBtn prepend-icon="bi-briefcase" @click="openDialog()">Post New Job</VBtn>
         </template>
 
         <VCardText>
           <VDataTable
             :headers="[
+              { title: 'Code', key: 'job_code' },
               { title: 'Title', key: 'title' },
               { title: 'Company', key: 'company' },
-              { title: 'Category', key: 'category.name' },
-              { title: 'Location', key: 'location' },
-              { title: 'Skills', key: 'skills' },
+              { title: 'Industry', key: 'industry_type.name' },
+              { title: 'Dates', key: 'dates', sortable: false },
               { title: 'Actions', key: 'actions', sortable: false, align: 'right' }
             ]"
             :items="jobs"
             :loading="loading"
           >
-            <template #item.skills="{ item }">
-              <VChipGroup v-if="item.skills && item.skills.length">
-                <VChip v-for="skill in item.skills" :key="skill.id" size="x-small" label color="primary" variant="tonal">
-                  {{ skill.name }}
-                </VChip>
-              </VChipGroup>
+            <template #item.dates="{ item }">
+              <div class="text-caption">
+                <div class="text-success"><VIcon size="12" icon="bi-calendar-check" /> {{ item.opening_date || 'N/A' }}</div>
+                <div class="text-error"><VIcon size="12" icon="bi-calendar-x" /> {{ item.closing_date || 'N/A' }}</div>
+              </div>
             </template>
 
             <template #item.actions="{ item }">
-              <VBtn v-if="hasPermission('edit jobs')" icon="bx-pencil" variant="text" size="small" color="info" @click="openDialog(item)" />
-              <VBtn v-if="hasPermission('delete jobs')" icon="bx-trash" variant="text" size="small" color="error" @click="deleteItem(item.id)" />
+              <div class="d-flex gap-2 justify-end">
+                <VBtn v-if="hasPermission('edit jobs')" variant="tonal" size="small" color="info" prepend-icon="bi-pencil" @click="openDialog(item)">Edit</VBtn>
+                <VBtn v-if="hasPermission('delete jobs')" variant="tonal" size="small" color="error" prepend-icon="bi-trash" @click="deleteItem(item.id)">Delete</VBtn>
+              </div>
             </template>
           </VDataTable>
         </VCardText>
@@ -165,21 +181,43 @@ onMounted(() => {
       <VCard :title="editedItem.id ? 'Edit Vacancy' : 'Create Vacancy'">
         <VCardText>
           <VRow>
-            <VCol cols="12" md="6">
+            <VCol cols="12" md="4">
+              <AppTextField v-model="editedItem.job_code" label="Job Code" placeholder="e.g. JB-001" />
+            </VCol>
+            <VCol cols="12" md="8">
               <AppTextField v-model="editedItem.title" label="Position Title" />
             </VCol>
-            <VCol cols="12" md="6">
+            
+            <VCol cols="12" md="4">
+              <AppSelect2 v-model="editedItem.industry_type_id" :items="industryTypes" item-title="name" item-value="id" label="Industry Type" />
+            </VCol>
+            <VCol cols="12" md="4">
               <AppSelect2 v-model="editedItem.job_category_id" :items="categories" item-title="name" item-value="id" label="Job Category" />
             </VCol>
-            <VCol cols="12" md="6">
-              <AppSelect2 v-model="editedItem.client_id" :items="clientsList" item-title="title" item-value="id" label="Linked Client/Company (Optional)" />
+             <VCol cols="12" md="4">
+              <AppSelect2 v-model="editedItem.gender_preference" :items="['No Preference', 'Male', 'Female']" label="Gender Preference" />
             </VCol>
-            <VCol cols="12" md="6">
+
+            <VCol cols="12" md="4">
+              <AppSelect2 v-model="editedItem.client_id" :items="clientsList" item-title="title" item-value="id" label="Linked Client/Company" />
+            </VCol>
+            <VCol cols="12" md="4">
               <AppTextField v-model="editedItem.company" label="Fallback Company Name" />
             </VCol>
-            <VCol cols="12" md="6">
+            <VCol cols="12" md="4">
               <AppTextField v-model="editedItem.location" label="Location" />
             </VCol>
+
+            <VCol cols="12" md="4">
+               <AppTextField v-model="editedItem.opening_date" label="Opening Date" type="date" />
+            </VCol>
+            <VCol cols="12" md="4">
+               <AppTextField v-model="editedItem.closing_date" label="Closing Date" type="date" />
+            </VCol>
+            <VCol cols="12" md="4">
+               <AppSelect2 v-model="editedItem.currency_id" :items="currencies" item-title="name" item-value="id" label="Salary Currency" />
+            </VCol>
+
             <VCol cols="12" md="6">
               <VRow>
                   <VCol cols="6"><AppTextField v-model="editedItem.experience_min" label="Min Exp (Yrs)" type="number" /></VCol>
@@ -187,14 +225,12 @@ onMounted(() => {
               </VRow>
             </VCol>
             <VCol cols="12" md="6">
-              <AppSelect2 v-model="editedItem.currency_id" :items="currencies" item-title="name" item-value="id" label="Salary Currency" />
-            </VCol>
-            <VCol cols="12" md="6">
               <VRow>
                   <VCol cols="6"><AppTextField v-model="editedItem.salary_from" label="Salary Min" type="number" /></VCol>
                   <VCol cols="6"><AppTextField v-model="editedItem.salary_to" label="Salary Max" type="number" /></VCol>
               </VRow>
             </VCol>
+
             <VCol cols="12" md="12">
                <AppCombobox
                 v-model="editedItem.skills"

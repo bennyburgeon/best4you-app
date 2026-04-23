@@ -1,3 +1,4 @@
+import { h } from 'vue'
 import checkboxChecked from '@images/svg/checkbox-checked.svg'
 import checkboxIndeterminate from '@images/svg/checkbox-indeterminate.svg'
 import checkboxUnchecked from '@images/svg/checkbox-unchecked.svg'
@@ -13,61 +14,67 @@ const customIcons = {
 }
 
 const aliases = {
-  calendar: 'bx-calendar',
-  collapse: 'bx-chevron-up',
-  complete: 'bx-check',
-  cancel: 'bx-x',
-  close: 'bx-x',
-  delete: 'bx-bxs-x-circle',
-  clear: 'bx-x-circle',
-  success: 'bx-check-circle',
-  info: 'bx-info-circle',
-  warning: 'bx-error',
-  error: 'bx-error-circle',
-  prev: 'bx-chevron-left',
-  ratingEmpty: 'bx-star',
-  ratingFull: 'bx-bxs-star',
-  ratingHalf: 'bx-bxs-star-half',
-  next: 'bx-chevron-right',
-  delimiter: 'bx-circle',
-  sort: 'bx-up-arrow-alt',
-  expand: 'bx-chevron-down',
-  menu: 'bx-menu',
-  subgroup: 'bx-caret-down',
-  dropdown: 'bx-chevron-down',
-  edit: 'bx-pencil',
-  loading: 'bx-refresh',
-  first: 'bx-skip-previous',
-  last: 'bx-skip-next',
-  unfold: 'bx-move-vertical',
-  file: 'bx-paperclip',
-  plus: 'bx-plus',
-  minus: 'bx-minus',
-  sortAsc: 'bx-up-arrow-alt',
-  sortDesc: 'bx-down-arrow-alt',
+  calendar: 'bi-calendar',
+  collapse: 'bi-chevron-up',
+  complete: 'bi-check',
+  cancel: 'bi-x',
+  close: 'bi-x',
+  delete: 'bi-x-circle',
+  clear: 'bi-x-circle',
+  success: 'bi-check-circle',
+  info: 'bi-info-circle',
+  warning: 'bi-exclamation-triangle',
+  error: 'bi-exclamation-circle',
+  prev: 'bi-chevron-left',
+  ratingEmpty: 'bi-star',
+  ratingFull: 'bi-star-fill',
+  ratingHalf: 'bi-star-half',
+  next: 'bi-chevron-right',
+  delimiter: 'bi-circle',
+  sort: 'bi-arrow-up',
+  expand: 'bi-chevron-down',
+  menu: 'bi-list',
+  subgroup: 'bi-caret-down-fill',
+  dropdown: 'bi-chevron-down',
+  edit: 'bi-pencil',
+  loading: 'bi-arrow-clockwise',
+  first: 'bi-chevron-double-left',
+  last: 'bi-chevron-double-right',
+  unfold: 'bi-arrows-expand',
+  file: 'bi-paperclip',
+  plus: 'bi-plus',
+  minus: 'bi-dash',
+  sortAsc: 'bi-arrow-up',
+  sortDesc: 'bi-arrow-down',
 }
 
 export const iconify = {
   component: props => {
-    // Load custom SVG directly instead of going through icon component
-    if (typeof props.icon === 'string') {
-      const iconComponent = customIcons[props.icon]
-      if (iconComponent)
-        return h(iconComponent)
+    const iconName = props.icon
+    
+    // Handle custom SVGs
+    if (typeof iconName === 'string' && customIcons[iconName]) {
+      return h(customIcons[iconName])
+    }
+
+    // Handle Bootstrap Icons
+    if (typeof iconName === 'string' && iconName.startsWith('bi-')) {
+      return h('i', {
+        class: ['bi', iconName],
+        style: 'font-size: inherit; color: inherit;'
+      })
     }
     
+    // Fallback for other icons
     return h(props.tag, {
       ...props,
-
-      // As we are using class based icons
-      class: [props.icon],
-
-      // Remove used props from DOM rendering
+      class: [iconName],
       tag: undefined,
       icon: undefined,
     })
   },
 }
+
 export const icons = {
   defaultSet: 'iconify',
   aliases,

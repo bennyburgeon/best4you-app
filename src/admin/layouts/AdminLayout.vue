@@ -56,21 +56,22 @@ onMounted(async () => {
 
     <template #vertical-nav-content>
       <VList class="nav-items">
-        <VListItem to="/admin" prepend-icon="bx-home-circle" title="Dashboard"></VListItem>
-        <VListItem v-if="hasPermission('view categories')" to="/admin/categories" prepend-icon="bx-list-ul" title="Categories"></VListItem>
-        <VListItem v-if="hasPermission('view clients')" to="/admin/clients" prepend-icon="bx-building-house" title="Clients"></VListItem>
-        <VListItem v-if="hasPermission('view jobs')" to="/admin/jobs" prepend-icon="bx-briefcase" title="Jobs"></VListItem>
-        <VListItem v-if="hasPermission('view applications')" to="/admin/applications" prepend-icon="bx-file-blank" title="Applications"></VListItem>
-        <VListItem v-if="hasPermission('view skills')" to="/admin/skills" prepend-icon="bx-wrench" title="Skills"></VListItem>
-        <VListItem v-if="hasPermission('view currencies')" to="/admin/currencies" prepend-icon="bx-money" title="Currencies"></VListItem>
+        <VListItem to="/admin" prepend-icon="bi-house-door" title="Dashboard"></VListItem>
+        <VListItem v-if="hasPermission('view categories')" to="/admin/categories" prepend-icon="bi-list-ul" title="Categories"></VListItem>
+        <VListItem v-if="hasPermission('view industry-types')" to="/admin/industry-types" prepend-icon="bi-briefcase" title="Industry Types"></VListItem>
+        <VListItem v-if="hasPermission('view clients')" to="/admin/clients" prepend-icon="bi-building" title="Clients"></VListItem>
+        <VListItem v-if="hasPermission('view jobs')" to="/admin/jobs" prepend-icon="bi-briefcase" title="Jobs"></VListItem>
+        <VListItem v-if="hasPermission('view applications')" to="/admin/applications" prepend-icon="bi-file-earmark" title="Applications"></VListItem>
+        <VListItem v-if="hasPermission('view skills')" to="/admin/tools" prepend-icon="bi-wrench" title="Skills"></VListItem>
+        <VListItem v-if="hasPermission('view currencies')" to="/admin/currencies" prepend-icon="bi-cash-stack" title="Currencies"></VListItem>
         
         <VListGroup v-if="hasPermission('view roles') || hasPermission('view users')" value="Access Control">
           <template #activator="{ props }">
-            <VListItem v-bind="props" prepend-icon="bx-shield-quarter" title="Access Control" />
+            <VListItem v-bind="props" prepend-icon="bi-shield-lock" title="Access Control" />
           </template>
 
-          <VListItem v-if="hasPermission('view roles')" to="/admin/roles" prepend-icon="bx-lock-open-alt" title="Roles & Permissions" />
-          <VListItem v-if="hasPermission('view users')" to="/admin/users" prepend-icon="bx-user" title="Users" />
+          <VListItem v-if="hasPermission('view roles')" to="/admin/roles" prepend-icon="bi-key" title="Roles & Permissions" />
+          <VListItem v-if="hasPermission('view users')" to="/admin/users" prepend-icon="bi-person" title="Users" />
         </VListGroup>
       </VList>
     </template>

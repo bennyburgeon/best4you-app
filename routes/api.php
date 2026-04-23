@@ -13,7 +13,7 @@ use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PermissionController;
-
+use App\Http\Controllers\IndustryTypeController;
 
 // Auth Routes (Guest)
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -27,6 +27,7 @@ Route::get('/job-categories', [JobCategoryController::class, 'index']);
 Route::get('/clients', [ClientController::class, 'index']);
 Route::get('/skills', [SkillController::class, 'index']);
 Route::get('/currencies', [CurrencyController::class, 'index']);
+Route::get('/industry-types', [IndustryTypeController::class, 'index']);
 
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -42,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('jobs', JobController::class)->except(['index', 'show']);
     Route::apiResource('skills', SkillController::class)->except(['index']);
     Route::apiResource('currencies', CurrencyController::class)->except(['index']);
+    Route::apiResource('industry-types', IndustryTypeController::class)->except(['index']);
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('users', UserController::class);
     Route::get('permissions', [PermissionController::class, 'index']);

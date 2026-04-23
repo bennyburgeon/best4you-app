@@ -64,7 +64,7 @@ onMounted(fetchCategories);
     <VCol cols="12">
       <VCard title="Job Categories" subtitle="Manage your hierarchical job clusters">
         <template #append v-if="hasPermission('create categories')">
-          <VBtn prepend-icon="bx-plus" color="primary" @click="openDialog()">Add Category</VBtn>
+          <VBtn prepend-icon="bi-plus" color="primary" @click="openDialog()">Add Category</VBtn>
         </template>
 
         <VCardText>
@@ -79,8 +79,10 @@ onMounted(fetchCategories);
             :loading="loading"
           >
             <template #item.actions="{ item }">
-              <VBtn v-if="hasPermission('edit categories')" icon="bx-edit" variant="text" color="info" @click="openDialog(item)"></VBtn>
-              <VBtn v-if="hasPermission('delete categories')" icon="bx-trash" variant="text" color="error" @click="deleteItem(item.id)"></VBtn>
+              <div class="d-flex gap-2">
+                <VBtn v-if="hasPermission('edit categories')" size="small" variant="tonal" color="info" prepend-icon="bi-pencil-square" @click="openDialog(item)">Edit</VBtn>
+                <VBtn v-if="hasPermission('delete categories')" size="small" variant="tonal" color="error" prepend-icon="bi-trash" @click="deleteItem(item.id)">Delete</VBtn>
+              </div>
             </template>
           </VDataTable>
         </VCardText>

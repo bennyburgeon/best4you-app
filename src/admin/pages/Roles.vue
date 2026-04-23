@@ -87,7 +87,7 @@ onMounted(() => {
     <VCol cols="12">
       <VCard title="Roles & Permissions" subtitle="Manage user access levels">
         <template #append v-if="hasPermission('create roles')">
-          <VBtn color="primary" prepend-icon="bx-plus" @click="dialog = true">Add Role</VBtn>
+          <VBtn color="primary" prepend-icon="bi-plus" @click="dialog = true">Add Role</VBtn>
         </template>
 
         <VCardText>
@@ -108,10 +108,10 @@ onMounted(() => {
 
             <template #item.actions="{ item }">
               <VBtn v-if="hasPermission('edit roles')" icon size="small" variant="text" color="info" @click="editItem(item)">
-                <VIcon icon="bx-edit" />
+                <VIcon icon="bi-pencil-square" />
               </VBtn>
               <VBtn v-if="hasPermission('delete roles') && item.name !== 'super-admin'" icon size="small" variant="text" color="error" @click="deleteItem(item)">
-                <VIcon icon="bx-trash" />
+                <VIcon icon="bi-trash" />
               </VBtn>
             </template>
           </VDataTable>

@@ -83,7 +83,7 @@ onMounted(() => {
     <VCol cols="12">
       <VCard title="User Management" subtitle="Manage admin panel users and their roles">
         <template #append v-if="hasPermission('create users')">
-          <VBtn color="primary" prepend-icon="bx-user-plus" @click="dialog = true">Add User</VBtn>
+          <VBtn color="primary" prepend-icon="bi-person-plus" @click="dialog = true">Add User</VBtn>
         </template>
 
         <VCardText>
@@ -108,10 +108,10 @@ onMounted(() => {
 
             <template #item.actions="{ item }">
               <VBtn v-if="hasPermission('edit users')" icon size="small" variant="text" color="info" @click="editItem(item)">
-                <VIcon icon="bx-edit" />
+                <VIcon icon="bi-pencil-square" />
               </VBtn>
               <VBtn v-if="hasPermission('delete users')" icon size="small" variant="text" color="error" @click="deleteItem(item)">
-                <VIcon icon="bx-trash" />
+                <VIcon icon="bi-trash" />
               </VBtn>
             </template>
           </VDataTable>

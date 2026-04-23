@@ -24,7 +24,10 @@ class ClientController extends Controller
             'logo' => 'nullable|image',
             'verified' => 'boolean',
             'contact_number' => 'nullable|string',
-            'contact_email' => 'nullable|email'
+            'contact_email' => 'nullable|email',
+            'hr_name' => 'nullable|string|max:255',
+            'hr_contact' => 'nullable|string',
+            'hr_email' => 'nullable|email'
         ]);
 
         $data = $request->except('logo');
@@ -56,7 +59,10 @@ class ClientController extends Controller
             'logo' => 'nullable|image',
             'verified' => 'boolean',
             'contact_number' => 'nullable|string',
-            'contact_email' => 'nullable|email'
+            'contact_email' => 'nullable|email',
+            'hr_name' => 'nullable|string|max:255',
+            'hr_contact' => 'nullable|string',
+            'hr_email' => 'nullable|email'
         ]);
 
         $data = $request->except('logo');

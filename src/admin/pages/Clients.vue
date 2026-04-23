@@ -9,7 +9,14 @@ const clients = ref([]);
 const loading = ref(false);
 const dialog = ref(false);
 const dropzoneFile = ref(null);
-const editedItem = ref({ id: null, title: '', verified: false });
+const editedItem = ref({ 
+    id: null, 
+    title: '', 
+    verified: false,
+    hr_name: '',
+    hr_contact: '',
+    hr_email: ''
+});
 
 const fetchClients = async () => {
     loading.value = true;
@@ -25,9 +32,22 @@ const fetchClients = async () => {
 
 const openDialog = (item = null) => {
     if (item) {
-        editedItem.value = { ...item, verified: !!item.verified };
+        editedItem.value = { 
+            ...item, 
+            verified: !!item.verified,
+            hr_name: item.hr_name || '',
+            hr_contact: item.hr_contact || '',
+            hr_email: item.hr_email || ''
+        };
     } else {
-        editedItem.value = { id: null, title: '', verified: false };
+        editedItem.value = { 
+            id: null, 
+            title: '', 
+            verified: false,
+            hr_name: '',
+            hr_contact: '',
+            hr_email: ''
+        };
     }
     dropzoneFile.value = null;
     dialog.value = true;
@@ -81,7 +101,7 @@ onMounted(fetchClients);
     <VCol cols="12">
       <VCard title="Clients / Partners" subtitle="Trust partners and organizations">
         <template #append v-if="hasPermission('create clients')">
-          <VBtn prepend-icon="bx-plus-circle" color="primary" @click="openDialog()">Add Client</VBtn>
+          <VBtn prepend-icon="bi-plus-circle" color="primary" @click="openDialog()">Add Client</VBtn>
         </template>
 
         <VCardText>
@@ -99,7 +119,7 @@ onMounted(fetchClients);
               <VAvatar size="48" rounded="lg" color="light-primary" v-if="item.logo">
                 <VImg :src="item.logo" />
               </VAvatar>
-              <VAvatar size="48" rounded="lg" color="light-primary" v-else icon="bx-building-house" />
+              <VAvatar size="48" rounded="lg" color="light-primary" v-else icon="bi-building" />
             </template>
 
             <template #item.verified="{ item }">
@@ -109,8 +129,10 @@ onMounted(fetchClients);
             </template>
 
             <template #item.actions="{ item }">
-               <VBtn v-if="hasPermission('edit clients')" size="small" icon="bx-edit-alt" variant="text" color="info" @click="openDialog(item)"></VBtn>
-               <VBtn v-if="hasPermission('delete clients')" size="small" icon="bx-trash-alt" variant="text" color="error" @click="deleteItem(item.id)"></VBtn>
+               <div class="d-flex gap-2">
+                 <VBtn v-if="hasPermission('edit clients')" size="small" variant="tonal" color="info" prepend-icon="bi-pencil-square" @click="openDialog(item)">Edit</VBtn>
+                 <VBtn v-if="hasPermission('delete clients')" size="small" variant="tonal" color="error" prepend-icon="bi-trash" @click="deleteItem(item.id)">Delete</VBtn>
+               </div>
             </template>
           </VDataTable>
         </VCardText>
@@ -122,8 +144,24 @@ onMounted(fetchClients);
         <VCardText>
           <VRow>
             <VCol cols="12">
-              <AppTextField v-model="editedItem.title" label="Company / Client Name" prepend-inner-icon="bx-building" />
+              <AppTextField v-model="editedItem.title" label="Company / Client Name" prepend-inner-icon="bi-building" />
             </VCol>
+            
+            <VCol cols="12">
+              <p class="text-overline mb-2">HR Contact Details</p>
+              <VDivider class="mb-4" />
+            </VCol>
+
+            <VCol cols="12" md="4">
+              <AppTextField v-model="editedItem.hr_name" label="HR Name" placeholder="Full name" prepend-inner-icon="bi-person" />
+            </VCol>
+            <VCol cols="12" md="4">
+              <AppTextField v-model="editedItem.hr_contact" label="HR Contact" placeholder="Phone number" prepend-inner-icon="bi-telephone" />
+            </VCol>
+            <VCol cols="12" md="4">
+              <AppTextField v-model="editedItem.hr_email" label="HR Email" placeholder="Email address" prepend-inner-icon="bi-envelope" />
+            </VCol>
+
             <VCol cols="12">
               <AppDropzone v-model="dropzoneFile" label="Client Logo" accepted-files="image/*" />
             </VCol>

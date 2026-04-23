@@ -62,7 +62,7 @@ onMounted(() => {
                 v-model="filters.search"
                 label="Search Keywords"
                 placeholder="Name, Phone, Email"
-                prepend-inner-icon="bx-search"
+                prepend-inner-icon="bi-search"
                 @update:modelValue="fetchApplications"
               />
             </VCol>
@@ -117,7 +117,7 @@ onMounted(() => {
                 size="small"
                 variant="tonal"
                 color="primary"
-                prepend-icon="bx-download"
+                prepend-icon="bi-download"
                 :href="item.resume_url"
                 target="_blank"
               >Download</VBtn>
@@ -125,7 +125,7 @@ onMounted(() => {
             </template>
 
             <template #item.actions="{ item }">
-                <VBtn v-if="hasPermission('delete applications')" icon="bx-trash" variant="text" size="small" color="error" @click="deleteApplication(item.id)" />
+                <VBtn v-if="hasPermission('delete applications')" icon="bi-trash" variant="text" size="small" color="error" @click="deleteApplication(item.id)" />
             </template>
 
             <template #item.created_at="{ item }">

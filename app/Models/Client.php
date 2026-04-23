@@ -10,7 +10,16 @@ class Client extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
-    protected $fillable = ['title', 'logo', 'contact_number', 'contact_email', 'verified'];
+    protected $fillable = [
+        'title', 
+        'logo', 
+        'contact_number', 
+        'contact_email', 
+        'verified',
+        'hr_name',
+        'hr_contact',
+        'hr_email'
+    ];
     
     protected $appends = ['logo'];
 

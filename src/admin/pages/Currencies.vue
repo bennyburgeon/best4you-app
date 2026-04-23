@@ -68,7 +68,7 @@ onMounted(fetchCurrencies)
     <VCol cols="12">
       <VCard title="Currencies" subtitle="Manage master data for currencies">
         <template #append v-if="hasPermission('create currencies')">
-          <VBtn color="primary" prepend-icon="bx-plus" @click="dialog = true">Add Currency</VBtn>
+          <VBtn color="primary" prepend-icon="bi-plus" @click="dialog = true">Add Currency</VBtn>
         </template>
 
         <VCardText>
@@ -89,10 +89,10 @@ onMounted(fetchCurrencies)
 
             <template #item.actions="{ item }">
               <VBtn v-if="hasPermission('edit currencies')" icon size="small" variant="text" color="info" @click="editItem(item)">
-                <VIcon icon="bx-edit" />
+                <VIcon icon="bi-pencil-square" />
               </VBtn>
               <VBtn v-if="hasPermission('delete currencies')" icon size="small" variant="text" color="error" @click="deleteItem(item)">
-                <VIcon icon="bx-trash" />
+                <VIcon icon="bi-trash" />
               </VBtn>
             </template>
           </VDataTable>
