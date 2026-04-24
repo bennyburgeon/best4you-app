@@ -11,6 +11,7 @@ import '@styles/styles.scss';
 
 axios.defaults.baseURL = '/api';
 axios.defaults.withCredentials = true;
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 const app = createApp(App);
 

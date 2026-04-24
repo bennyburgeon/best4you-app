@@ -6,7 +6,7 @@
   <link rel="icon" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" type="text/css" href="/admin/loader.css" />
+  <link rel="stylesheet" type="text/css" href="/admin-assets/loader.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   @vite(['src/admin/main.js'])
 </head>

@@ -36,7 +36,7 @@ class RolePermissionSeeder extends Seeder
 
         // Create a basic super admin user if not exists
         $admin = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
+            ['email' => 'admin@b4u.com'],
             [
                 'name' => 'Super Admin',
                 'password' => Hash::make('password')
