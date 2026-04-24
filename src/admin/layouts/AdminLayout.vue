@@ -9,7 +9,7 @@ import UserProfile from '@/admin/layouts_sneat/components/UserProfile.vue';
 import { useAuth } from '@/admin/composables/useAuth';
 
 const router = useRouter();
-const { hasPermission, initAuth } = useAuth();
+const { hasPermission, initAuth, isInitialized } = useAuth();
 
 onMounted(async () => {
   await initAuth();
@@ -17,7 +17,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <VerticalNavLayout>
+  <div v-if="!isInitialized" class="d-flex h-screen align-center justify-center">
+     <VProgressCircular indeterminate color="primary" />
+  </div>
+  <VerticalNavLayout v-else>
     <template #navbar="{ toggleVerticalOverlayNavActive }">
       <div class="d-flex h-100 align-center">
         <!-- 👉 Vertical nav toggle in overlay mode -->

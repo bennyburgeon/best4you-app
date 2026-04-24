@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue';
-import axios from 'axios';
+import axios from '@/admin/utils/axios';
 
 const user = ref(null);
 const roles = ref([]);
@@ -41,6 +41,7 @@ export const useAuth = () => {
         user,
         roles,
         permissions,
+        isInitialized,
         initAuth,
         hasPermission,
     };

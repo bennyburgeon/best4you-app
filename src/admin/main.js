@@ -1,17 +1,13 @@
 import { createApp } from 'vue';
 import App from '@/admin/App.vue';
+import axios from '@/admin/utils/axios';
 import router from '@/admin/router';
 import { registerPlugins } from '@/admin/@core/utils/plugins';
-import axios from 'axios';
 
 // Styles
 import '@/admin/@core/scss/template/index.scss';
 import '@layouts/styles/index.scss';
 import '@styles/styles.scss';
-
-axios.defaults.baseURL = '/api';
-axios.defaults.withCredentials = true;
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 const app = createApp(App);
 

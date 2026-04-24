@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import axios from '@/admin/utils/axios';
 import { useRouter } from 'vue-router';
 import logo from '@images/logo.svg?raw';
 import authV1BottomShape from '@images/svg/auth-v1-bottom-shape.svg?url';
