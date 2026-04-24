@@ -107,12 +107,10 @@ onMounted(() => {
             </template>
 
             <template #item.actions="{ item }">
-              <VBtn v-if="hasPermission('edit roles')" icon size="small" variant="text" color="info" @click="editItem(item)">
-                <VIcon icon="bi-pencil-square" />
-              </VBtn>
-              <VBtn v-if="hasPermission('delete roles') && item.name !== 'super-admin'" icon size="small" variant="text" color="error" @click="deleteItem(item)">
-                <VIcon icon="bi-trash" />
-              </VBtn>
+              <div class="d-flex gap-2 justify-end">
+                <VBtn v-if="hasPermission('edit roles')" size="small" variant="tonal" color="info" prepend-icon="bi-pencil-square" @click="editItem(item)">Edit</VBtn>
+                <VBtn v-if="hasPermission('delete roles') && item.name !== 'super-admin'" size="small" variant="tonal" color="error" prepend-icon="bi-trash" @click="deleteItem(item)">Delete</VBtn>
+              </div>
             </template>
           </VDataTable>
         </VCardText>

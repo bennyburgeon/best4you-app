@@ -24,6 +24,7 @@ class RolePermissionSeeder extends Seeder
             'view applications', 'delete applications',
             'view skills', 'create skills', 'edit skills', 'delete skills',
             'view currencies', 'create currencies', 'edit currencies', 'delete currencies',
+            'view industry-types', 'create industry-types', 'edit industry-types', 'delete industry-types',
         ];
 
         foreach ($permissions as $permission) {

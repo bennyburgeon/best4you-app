@@ -125,7 +125,9 @@ onMounted(() => {
             </template>
 
             <template #item.actions="{ item }">
-                <VBtn v-if="hasPermission('delete applications')" icon="bi-trash" variant="text" size="small" color="error" @click="deleteApplication(item.id)" />
+              <div class="d-flex gap-2 justify-end">
+                <VBtn v-if="hasPermission('delete applications')" size="small" variant="tonal" color="error" prepend-icon="bi-trash" @click="deleteApplication(item.id)">Delete</VBtn>
+              </div>
             </template>
 
             <template #item.created_at="{ item }">
