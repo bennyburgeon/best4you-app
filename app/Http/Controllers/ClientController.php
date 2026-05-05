@@ -42,7 +42,11 @@ class ClientController extends Controller
             $client->addMediaFromRequest('logo')->toMediaCollection('logo');
         }
 
-        return response()->json($client, 201);
+        if ($request->wantsJson()) {
+            return response()->json($client, 201);
+        }
+
+        return redirect()->route('clients.index')->with('success', 'Client created successfully');
     }
 
     public function show(Client $client)
@@ -79,13 +83,20 @@ class ClientController extends Controller
             $client->clearMediaCollection('logo');
         }
 
-        return response()->json($client);
+        if ($request->wantsJson()) {
+            return response()->json($client);
+        }
+
+        return redirect()->route('clients.index')->with('success', 'Client updated successfully');
     }
 
     public function destroy(Client $client)
     {
         $client->clearMediaCollection('logo');
         $client->delete();
-        return response()->json(null, 204);
+        if ($request->wantsJson()) {
+            return response()->json(null, 204);
+        }
+        return redirect()->route('clients.index')->with('success', 'Client deleted successfully');
     }
 }

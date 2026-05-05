@@ -55,13 +55,20 @@ class JobApplicationController extends Controller
             $application->addMediaFromRequest('resume')->toMediaCollection('resume');
         }
 
-        return response()->json($application, 201);
+        if ($request->wantsJson()) {
+            return response()->json($application, 201);
+        }
+
+        return redirect()->back()->with('success', 'Your application has been submitted successfully!');
     }
 
     public function destroy(JobApplication $jobApplication)
     {
         $jobApplication->clearMediaCollection('resume');
         $jobApplication->delete();
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+        return redirect()->back()->with('success', 'Application deleted successfully');
     }
 }
