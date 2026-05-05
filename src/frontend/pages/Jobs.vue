@@ -58,7 +58,7 @@
               </div>
               
               <div class="job-list-wrapper">
-                <div v-for="job in jobs" :key="job.id" class="card job-card-innovative mb-4 border-0 rounded-4 overflow-hidden position-relative">
+                <div v-for="job in jobs" :key="job.id" class="card job-card-innovative mb-4 border border-secondary border-opacity-25 rounded-4 overflow-hidden position-relative shadow-none">
                   <!-- Decorative Element -->
                   <div class="card-decoration"></div>
                   
@@ -71,18 +71,18 @@
                               <span class="text-muted small fw-medium d-flex align-items-center"><i class="fa fa-clock-o me-1"></i> {{ job.posted_days_ago === 0 ? 'Just Now' : job.posted_days_ago + 'd ago' }}</span>
                           </div>
                           
-                          <h3 class="card-title fw-bolder mb-3 text-dark">
-                              <router-link :to="{ name: 'job-details', params: { id: job.id }}" class="text-dark text-decoration-none hover-gradient-text transition-all">{{ job.title }}</router-link>
+                          <h3 class="card-title fw-bolder mb-3">
+                              <router-link :to="{ name: 'job-details', params: { id: job.id }}" class="text-primary text-decoration-none hover-gradient-text transition-all">{{ job.title }}</router-link>
                           </h3>
                           
                           <div class="d-flex flex-wrap gap-3 gap-md-4 text-secondary mb-4 fs-6 fw-medium">
-                             <div class="info-pill d-flex align-items-center"><div class="icon-circle bg-light me-2"><i class="fa fa-map-marker text-primary"></i></div> {{ job.location || 'Remote' }}</div>
-                             <div class="info-pill d-flex align-items-center"><div class="icon-circle bg-light me-2"><i class="fa fa-briefcase text-info"></i></div> {{ job.experience_min !== null ? job.experience_min + '-' + job.experience_max + ' Yrs' : 'Any Exp.' }}</div>
-                             <div class="info-pill d-flex align-items-center"><div class="icon-circle bg-light me-2"><i class="fa fa-money text-success"></i></div> 
+                             <div class="info-pill d-flex align-items-center"><div class="icon-circle border border-light me-2"><i class="fa fa-map-marker text-primary"></i></div> {{ job.location || 'Remote' }}</div>
+                             <div class="info-pill d-flex align-items-center"><div class="icon-circle border border-light me-2"><i class="fa fa-briefcase text-info"></i></div> {{ job.experience_min !== null ? job.experience_min + '-' + job.experience_max + ' Yrs' : 'Any Exp.' }}</div>
+                             <div class="info-pill d-flex align-items-center"><div class="icon-circle border border-light me-2"><i class="fa fa-money text-success"></i></div> 
                                 <span v-if="job.salary_from && job.salary_to && job.currency" class="text-dark">
                                     {{ job.currency.symbol }}{{ job.salary_from }} - {{ job.currency.symbol }}{{ job.salary_to }}
                                 </span>
-                                <span v-else>Competitive</span>
+                                <span v-else class="text-dark">Competitive</span>
                              </div>
                           </div>
 
