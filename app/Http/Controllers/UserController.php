@@ -7,11 +7,18 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
+use Spatie\Permission\Models\Role;
+
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(User::with('roles')->get());
+        $users = User::with('roles')->get();
+        if ($request->wantsJson()) {
+            return response()->json($users);
+        }
+        $roles = Role::all();
+        return view('admin.users.index', compact('users', 'roles'));
     }
 
     public function store(Request $request)

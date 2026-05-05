@@ -7,9 +7,13 @@ use App\Models\Currency;
 
 class CurrencyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Currency::all());
+        $currencies = Currency::all();
+        if ($request->wantsJson()) {
+            return response()->json($currencies);
+        }
+        return view('admin.currencies.index', compact('currencies'));
     }
 
     public function store(Request $request)
@@ -21,7 +25,10 @@ class CurrencyController extends Controller
         ]);
 
         $currency = Currency::create($data);
-        return response()->json($currency, 201);
+        if ($request->wantsJson()) {
+            return response()->json($currency, 201);
+        }
+        return redirect()->route('currencies.index')->with('success', 'Currency created successfully');
     }
 
     public function show(string $id)
@@ -40,13 +47,19 @@ class CurrencyController extends Controller
 
         $currency = Currency::findOrFail($id);
         $currency->update($data);
-        return response()->json($currency);
+        if ($request->wantsJson()) {
+            return response()->json($currency);
+        }
+        return redirect()->route('currencies.index')->with('success', 'Currency updated successfully');
     }
 
     public function destroy(string $id)
     {
         $currency = Currency::findOrFail($id);
         $currency->delete();
-        return response()->json(null, 204);
+        if ($request->wantsJson()) {
+            return response()->json(null, 204);
+        }
+        return redirect()->route('currencies.index')->with('success', 'Currency deleted successfully');
     }
 }

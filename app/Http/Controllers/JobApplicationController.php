@@ -30,7 +30,11 @@ class JobApplicationController extends Controller
             });
         }
 
-        return response()->json($query->get());
+        $applications = $query->get();
+        if ($request->wantsJson()) {
+            return response()->json($applications);
+        }
+        return view('admin.applications.index', compact('applications'));
     }
 
     public function store(Request $request)

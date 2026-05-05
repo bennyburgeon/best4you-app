@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 
 class SkillController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Skill::all();
+        $skills = Skill::all();
+        if ($request->wantsJson()) {
+            return response()->json($skills);
+        }
+        return view('admin.skills.index', compact('skills'));
     }
 
     public function store(Request $request)

@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 
 class JobCategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(JobCategory::with('parent')->get());
+        $categories = JobCategory::with('parent')->get();
+        if ($request->wantsJson()) {
+            return response()->json($categories);
+        }
+        $parentCategories = JobCategory::whereNull('parent_category_id')->get();
+        return view('admin.categories.index', compact('categories', 'parentCategories'));
     }
 
     public function store(Request $request)

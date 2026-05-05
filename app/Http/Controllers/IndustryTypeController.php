@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 
 class IndustryTypeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(IndustryType::all());
+        $industryTypes = IndustryType::all();
+        if ($request->wantsJson()) {
+            return response()->json($industryTypes);
+        }
+        return view('admin.industry_types.index', compact('industryTypes'));
     }
 
     public function store(Request $request)

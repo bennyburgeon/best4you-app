@@ -8,9 +8,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Client::all());
+        $clients = Client::all();
+        if ($request->wantsJson()) {
+            return response()->json($clients);
+        }
+        return view('admin.clients.index', compact('clients'));
     }
 
     public function store(Request $request)

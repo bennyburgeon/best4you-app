@@ -8,9 +8,14 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Role::with('permissions')->get());
+        $roles = Role::with('permissions')->get();
+        if ($request->wantsJson()) {
+            return response()->json($roles);
+        }
+        $permissions = Permission::all();
+        return view('admin.roles.index', compact('roles', 'permissions'));
     }
 
     public function store(Request $request)

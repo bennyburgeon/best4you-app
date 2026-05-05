@@ -10,6 +10,18 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    public function index()
+    {
+        $stats = [
+            'jobs' => Job::count(),
+            'applications' => JobApplication::count(),
+            'clients' => Client::count(),
+            'categories' => JobCategory::count(),
+        ];
+
+        return view('admin.dashboard', compact('stats'));
+    }
+
     public function stats()
     {
         return response()->json([
