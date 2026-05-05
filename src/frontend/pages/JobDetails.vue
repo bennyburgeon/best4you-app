@@ -20,28 +20,32 @@
       </div>
     </div>
 
-    <section class="news-single section">
-      <div class="container">
+    <section class="news-single section bg-light pt-5 pb-5">
+      <div class="container mt-4">
         <div class="row">
-          <div class="col-lg-8 col-12">
-            <div class="row">
-              <div class="col-12">
+          <div class="col-lg-8 col-12 mb-4 mb-lg-0">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+              <div class="card-body p-4 p-md-5">
                 <div class="single-main">
-                  <!-- News Title -->
-                  <h1 class="news-title fw-bold mb-4">{{ job.title }}</h1>
-                  <!-- Meta -->
-                  <div class="meta d-flex flex-wrap gap-4 mb-4 text-secondary small">
-                    <span class="d-flex align-items-center"><i class="fa fa-building me-2 text-primary"></i> {{ job.company }}</span>
-                    <span class="d-flex align-items-center"><i class="fa fa-map-marker me-2 text-primary"></i> {{ job.location }}</span>
-                    <span class="d-flex align-items-center"><i class="fa fa-calendar me-2 text-primary"></i> Posted {{ timeAgo(job.created_at) }}</span>
+                  <div class="d-flex align-items-center mb-4">
+                    <div>
+                        <h1 class="news-title fw-bold mb-2 text-dark">{{ job.title }}</h1>
+                        <div class="meta d-flex flex-wrap gap-3 text-secondary small fw-medium">
+                          <span class="d-flex align-items-center"><i class="fa fa-map-marker me-1 text-primary opacity-75"></i> {{ job.location }}</span>
+                          <span class="d-flex align-items-center"><i class="fa fa-clock-o me-1 text-primary opacity-75"></i> Posted {{ timeAgo(job.created_at) }}</span>
+                        </div>
+                    </div>
                   </div>
+                  
+                  <hr class="border-light my-4">
+                  
                   <!-- Description -->
-                  <div class="content fs-6 lh-lg mb-5" v-html="job.roles_and_responsibility"></div>
+                  <div class="content fs-6 text-secondary mb-5" style="line-height: 1.8;" v-html="job.roles_and_responsibility"></div>
 
-                  <div v-if="job.skills?.length" class="skills-section mt-5">
-                    <h4 class="fw-bold mb-3">Key Skills Required</h4>
+                  <div v-if="job.skills?.length" class="skills-section mt-5 bg-primary bg-opacity-10 p-4 rounded-4">
+                    <h5 class="fw-bold mb-3 text-primary"><i class="fa fa-star me-2"></i>Key Skills Required</h5>
                     <div class="d-flex flex-wrap gap-2">
-                       <span v-for="skill in job.skills" :key="skill.id" class="badge rounded-pill bg-light text-primary border px-3 py-2">
+                       <span v-for="skill in job.skills" :key="skill.id" class="badge rounded-pill bg-white text-dark shadow-sm px-4 py-2 border border-light">
                           {{ skill.name }}
                        </span>
                     </div>
@@ -52,37 +56,38 @@
           </div>
 
           <div class="col-lg-4 col-12">
-            <div class="main-sidebar p-4 bg-light rounded shadow-sm">
+            <div class="main-sidebar p-4 bg-white rounded-4 shadow-sm border-0 sticky-top" style="top: 100px;">
                 <!-- Single Widget -->
                 <div class="single-widget mb-4">
-                  <h3 class="title fw-bold mb-3">Quick Summary</h3>
+                  <h4 class="title fw-bold mb-4 text-dark border-bottom pb-3">Role Overview</h4>
                   <ul class="list-unstyled">
-                    <li class="mb-3 d-flex align-items-center">
-                      <div class="icon-box text-primary me-3"><i class="fa fa-money fs-4"></i></div>
+                    <li class="mb-4 d-flex align-items-center p-3 bg-light rounded-3">
+                      <div class="icon-box text-success me-3 bg-success bg-opacity-10 p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;"><i class="fa fa-money fs-5"></i></div>
                       <div>
-                        <span class="d-block smaller text-secondary fw-bold text-uppercase">Salary Range</span>
-                        <span class="fw-bold">{{ job.salary || 'Negotiable' }}</span>
+                        <span class="d-block text-muted small fw-semibold text-uppercase letter-spacing-1">Salary Range</span>
+                        <span class="fw-bold text-dark fs-6">{{ job.salary || 'Negotiable' }}</span>
                       </div>
                     </li>
-                    <li class="mb-3 d-flex align-items-center">
-                      <div class="icon-box text-primary me-3"><i class="fa fa-briefcase fs-4"></i></div>
+                    <li class="mb-4 d-flex align-items-center p-3 bg-light rounded-3">
+                      <div class="icon-box text-primary me-3 bg-primary bg-opacity-10 p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;"><i class="fa fa-briefcase fs-5"></i></div>
                       <div>
-                        <span class="d-block smaller text-secondary fw-bold text-uppercase">Job Category</span>
-                        <span class="fw-bold">{{ job.category?.name }}</span>
+                        <span class="d-block text-muted small fw-semibold text-uppercase letter-spacing-1">Job Category</span>
+                        <span class="fw-bold text-dark fs-6">{{ job.category?.name }}</span>
                       </div>
                     </li>
-                    <li class="mb-0 d-flex align-items-center">
-                      <div class="icon-box text-primary me-3"><i class="fa fa-user fs-4"></i></div>
+                    <li class="mb-0 d-flex align-items-center p-3 bg-light rounded-3">
+                      <div class="icon-box text-info me-3 bg-info bg-opacity-10 p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;"><i class="fa fa-calendar me-1 fs-5"></i></div>
                       <div>
-                        <span class="d-block smaller text-secondary fw-bold text-uppercase">HR Contact</span>
-                        <span class="fw-bold">{{ job.hr_incharge || 'HR Team' }}</span>
+                        <span class="d-block text-muted small fw-semibold text-uppercase letter-spacing-1">Closing Date</span>
+                        <span class="fw-bold text-dark fs-6">{{ job.closing_date ? new Date(job.closing_date).toLocaleDateString() : 'Ongoing' }}</span>
                       </div>
                     </li>
                   </ul>
                 </div>
                 <!-- Action Button -->
-                <div class="mt-5">
-                  <button class="btn btn-primary w-100 py-3 fw-bold" @click="showModal = true">Apply for this Position</button>
+                <div class="mt-4 pt-3 border-top border-light">
+                  <button class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-sm fs-5" @click="showModal = true">Apply Now</button>
+                  <p class="text-center text-muted small mt-3 mb-0"><i class="fa fa-lock me-1"></i> Your application is confidential</p>
                 </div>
             </div>
           </div>
