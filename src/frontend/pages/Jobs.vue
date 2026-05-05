@@ -60,32 +60,34 @@
                   <button v-if="filters.search || filters.location || filters.category" @click="clearFilters" class="btn btn-sm btn-outline-danger rounded-pill px-3">Clear Filters <i class="fa fa-times ms-1"></i></button>
               </div>
               
-              <div v-for="job in jobs" :key="job.id" class="card job-card mb-4 border border-light shadow-sm">
-                <div class="card-body p-4">
-                  <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div>
-                        <h5 class="card-title fw-bold mb-1">
+              <div v-for="job in jobs" :key="job.id" class="card job-card mb-4 border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-body p-4 p-md-5">
+                  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start mb-3">
+                    <div class="mb-3 mb-md-0">
+                        <span class="badge bg-primary-soft text-primary px-3 py-2 rounded-pill mb-3 border border-primary border-opacity-10 fw-medium letter-spacing-1 text-uppercase" style="font-size: 0.75rem;">{{ job.category?.name || 'Any Category' }}</span>
+                        <h4 class="card-title fw-bold mb-0">
                             <router-link :to="{ name: 'job-details', params: { id: job.id }}" class="text-dark text-decoration-none hover-primary">{{ job.title }}</router-link>
-                        </h5>
-                        <p class="card-subtitle text-muted mb-3 fw-semibold">
-                            <i class="fa fa-building-o me-1"></i> <router-link v-if="job.client" :to="`/clients/${job.client.id}`" class="text-decoration-none text-muted hover-primary">{{ job.client.title }}</router-link><span v-else>{{ job.company }}</span>
-                        </p>
+                        </h4>
                     </div>
-                    <div class="ms-3 text-end text-sm-start d-flex flex-column align-items-end">
-                       <img v-if="job.client && job.client.logo" :src="job.client.logo" alt="Company Logo" class="img-fluid border rounded shadow-sm mb-2" style="max-height: 40px; max-width: 100px; object-fit: contain;">
-                       <span class="badge bg-primary-soft text-primary px-3 py-2 rounded-1 border border-primary border-opacity-25">{{ job.category?.name || 'Any Category' }}</span>
+                    <div class="ms-md-4 text-start text-md-end flex-shrink-0">
+                       <div v-if="job.client && job.client.logo" class="logo-wrapper bg-white shadow-sm border border-light d-inline-flex align-items-center justify-content-center p-2 rounded-3" style="width: 70px; height: 70px;">
+                          <img :src="job.client.logo" alt="Logo" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                       </div>
+                       <div v-else class="logo-wrapper bg-light text-secondary d-inline-flex align-items-center justify-content-center p-2 rounded-3" style="width: 70px; height: 70px;">
+                          <i class="fa fa-briefcase fa-2x"></i>
+                       </div>
                     </div>
                   </div>
                   
-                  <div class="d-flex flex-wrap gap-4 text-secondary mb-3 fs-6">
-                     <span><i class="fa fa-map-marker me-1 text-muted"></i> {{ job.location || 'Not Specified' }}</span>
-                     <span>
-                        <i class="fa fa-briefcase me-1 text-muted"></i> 
+                  <div class="d-flex flex-wrap gap-4 text-secondary mb-4 fs-6">
+                     <span class="d-flex align-items-center"><i class="fa fa-map-marker me-2 text-primary opacity-75"></i> {{ job.location || 'Not Specified' }}</span>
+                     <span class="d-flex align-items-center">
+                        <i class="fa fa-clock-o me-2 text-primary opacity-75"></i> 
                         {{ job.experience_min !== null && job.experience_max !== null ? job.experience_min + '-' + job.experience_max + ' Yrs' : 'Not Specified' }}
                      </span>
-                     <span>
-                        <i class="fa fa-money me-1 text-muted"></i> 
-                        <span v-if="job.salary_from && job.salary_to && job.currency">
+                     <span class="d-flex align-items-center">
+                        <i class="fa fa-money me-2 text-success opacity-75"></i> 
+                        <span v-if="job.salary_from && job.salary_to && job.currency" class="fw-medium text-dark">
                             {{ job.currency.symbol }}{{ job.salary_from }} - {{ job.currency.symbol }}{{ job.salary_to }}
                         </span>
                         <span v-else>Not Disclosed</span>
@@ -93,17 +95,17 @@
                   </div>
 
                   <div class="d-flex flex-wrap gap-2 mb-4">
-                     <span v-for="skill in job.skills" :key="skill.id" class="badge rounded bg-light text-secondary fw-normal px-2 py-1">
-                        • {{ skill.name }}
+                     <span v-for="skill in job.skills" :key="skill.id" class="badge rounded-pill bg-light text-secondary fw-normal px-3 py-2 border border-light">
+                        {{ skill.name }}
                      </span>
-                     <span v-if="!job.skills || job.skills.length === 0" class="badge rounded bg-light text-secondary fw-normal px-2 py-1">
-                        • No specific skills listed
+                     <span v-if="!job.skills || job.skills.length === 0" class="text-muted small fst-italic">
+                        No specific skills listed
                      </span>
                   </div>
                   
-                  <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-light">
-                    <span class="text-muted small"><i class="fa fa-clock-o me-1"></i> {{ job.posted_days_ago === 0 ? 'Posted recently' : job.posted_days_ago + ' days ago' }}</span>
-                    <router-link :to="{ name: 'job-details', params: { id: job.id }}" class="btn btn-outline-primary rounded-pill px-4 py-1 fw-bold">View & Apply</router-link>
+                  <div class="d-flex justify-content-between align-items-center pt-4 border-top border-light mt-auto">
+                    <span class="text-muted small fw-medium"><i class="fa fa-calendar-check-o me-1"></i> {{ job.posted_days_ago === 0 ? 'Posted recently' : job.posted_days_ago + ' days ago' }}</span>
+                    <router-link :to="{ name: 'job-details', params: { id: job.id }}" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-sm btn-hover-elevate">Apply Now</router-link>
                   </div>
                 </div>
               </div>
