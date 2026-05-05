@@ -35,10 +35,14 @@ class ClientController extends Controller
         $client = Client::create($data);
 
         if ($request->hasFile('logo')) {
-            $client->addMediaFromRequest('logo')->toMediaCollection('logo');
+            $client->addMediaFromRequest('logo')->toMediaCollection('logo', 's3');
         }
 
-        return response()->json($client, 201);
+        if ($request->wantsJson()) {
+            return response()->json($client, 201);
+        }
+
+        return redirect()->route('clients.index')->with('success', 'Client created successfully');
     }
 
     public function show(Client $client)
@@ -70,12 +74,16 @@ class ClientController extends Controller
 
         if ($request->hasFile('logo')) {
             $client->clearMediaCollection('logo');
-            $client->addMediaFromRequest('logo')->toMediaCollection('logo');
+            $client->addMediaFromRequest('logo')->toMediaCollection('logo', 's3');
         } elseif ($request->input('remove_logo')) {
             $client->clearMediaCollection('logo');
         }
 
-        return response()->json($client);
+        if ($request->wantsJson()) {
+            return response()->json($client);
+        }
+
+        return redirect()->route('clients.index')->with('success', 'Client updated successfully');
     }
 
     public function destroy(Client $client)

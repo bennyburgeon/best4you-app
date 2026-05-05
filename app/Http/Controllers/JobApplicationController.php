@@ -48,10 +48,14 @@ class JobApplicationController extends Controller
         $application = JobApplication::create($data);
 
         if ($request->hasFile('resume')) {
-            $application->addMediaFromRequest('resume')->toMediaCollection('resume');
+            $application->addMediaFromRequest('resume')->toMediaCollection('resume', 's3');
         }
 
-        return response()->json($application, 201);
+        if ($request->wantsJson()) {
+            return response()->json($application, 201);
+        }
+
+        return redirect()->back()->with('success', 'Your application has been submitted successfully!');
     }
 
     public function destroy(JobApplication $jobApplication)
