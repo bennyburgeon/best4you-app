@@ -24,3 +24,4 @@ yarn-error.log
 test_login.php
 test_login2.php
 .eslintrc-auto-import.json
+composer.lock
