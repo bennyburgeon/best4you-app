@@ -67,8 +67,8 @@
                       <!-- Content Left -->
                       <div class="flex-grow-1">
                           <div class="d-flex align-items-center gap-2 mb-3">
-                              <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill border border-primary border-opacity-10 fw-semibold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">{{ job.category?.name || 'General' }}</span>
-                              <span class="text-muted small fw-medium d-flex align-items-center"><i class="fa fa-clock-o me-1"></i> {{ job.posted_days_ago === 0 ? 'Just Now' : job.posted_days_ago + 'd ago' }}</span>
+                              <span class="badge bg-primary text-white px-3 py-2 rounded-pill border border-primary fw-semibold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">{{ job.category?.name || 'General' }}</span>
+                              <span class="text-muted small fw-medium d-flex align-items-center"><i class="fa fa-clock-o me-1"></i> {{ formatDaysAgo(job.posted_days_ago) }}</span>
                           </div>
                           
                           <h3 class="card-title fw-bolder mb-3">
@@ -156,6 +156,14 @@ const clearFilters = () => {
     filters.value = { search: '', location: '', category: '' };
     router.replace({ path: '/jobs' });
     fetchJobs();
+}
+
+const formatDaysAgo = (days) => {
+    if (days === null || days === undefined) return 'Recently';
+    const numDays = Math.floor(days);
+    if (numDays === 0) return 'Just Now';
+    if (numDays === 1) return '1 day ago';
+    return numDays + ' days ago';
 }
 
 watch(() => route.query, (newQuery) => {

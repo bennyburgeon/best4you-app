@@ -99,9 +99,11 @@
     <div v-if="showModal" class="modal fade show d-block" style="background: rgba(0,0,0,0.5)">
        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content p-4 rounded-4">
-             <div class="modal-header border-0">
-                <h4 class="fw-bold">Apply for {{ job.title }}</h4>
-                <button class="btn-close" @click="showModal = false"></button>
+             <div class="modal-header border-0 pb-0">
+                <h4 class="fw-bold mb-0">Apply for {{ job.title }}</h4>
+                <button type="button" class="btn text-secondary fs-4 p-0 border-0 bg-transparent" @click="showModal = false">
+                   <i class="fa fa-times"></i>
+                </button>
              </div>
              <div class="modal-body">
                 <div v-if="successMsg" class="alert alert-success">{{ successMsg }}</div>
@@ -122,9 +124,12 @@
                       <label class="small fw-bold mb-1">Upload Resume (Optional)</label>
                       <input type="file" ref="fileInput" @change="handleFileChange" class="form-control" accept=".pdf,.doc,.docx">
                    </div>
-                   <button class="btn btn-primary w-100 py-2 fw-bold" :disabled="isSubmitting">
-                      {{ isSubmitting ? 'Submitting...' : 'Submit Application' }}
-                   </button>
+                   <div class="d-flex gap-3 mt-4">
+                       <button type="button" class="btn btn-light w-50 py-2 fw-bold border" @click="showModal = false">Cancel</button>
+                       <button type="submit" class="btn btn-primary w-50 py-2 fw-bold" :disabled="isSubmitting">
+                          {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+                       </button>
+                   </div>
                 </form>
              </div>
           </div>
