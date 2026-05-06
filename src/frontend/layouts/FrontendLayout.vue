@@ -52,7 +52,7 @@
                       <li><router-link to="/" active-class="active">Home</router-link></li>
                       <li><router-link to="/about" active-class="active">About</router-link></li>
                       <li><router-link to="/services" active-class="active">Services</router-link></li>
-                      <li><router-link to="/jobs" active-class="active">Job</router-link></li>
+                      <li><router-link to="/jobs" active-class="active">Jobs</router-link></li>
                       <li><router-link to="/contact" active-class="active">Contact Us</router-link></li>
                     </ul>
                   </nav>
