@@ -25,3 +25,4 @@ test_login.php
 test_login2.php
 .eslintrc-auto-import.json
 composer.lock
+package-lock.json
