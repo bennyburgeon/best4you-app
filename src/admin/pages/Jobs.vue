@@ -178,7 +178,7 @@ onMounted(() => {
     </VCol>
 
     <VDialog v-model="dialog" max-width="900">
-      <VCard :title="editedItem.id ? 'Edit Vacancy' : 'Create Vacancy'">
+      <VCard :title="editedItem.id ? 'Edit Job Vacancy' : 'Create Job Vacancy'">
         <VCardText>
           <VRow>
             <VCol cols="12" md="4">

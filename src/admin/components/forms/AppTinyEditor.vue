@@ -33,7 +33,7 @@ const init = {
   <div class="tinymce-editor-wrapper">
     <VLabel v-if="props.label" class="mb-2 d-block font-weight-medium">{{ props.label }}</VLabel>
     <Editor
-      api-key="c864fxd2xv3ravq3h92joto71cb8scfeg3zspnmw12lfyn3i"
+      :api-key="'c864fxd2xv3ravq3h92joto71cb8scfeg3zspnmw12lfyn3i'"
       :init="init"
       :model-value="props.modelValue"
       @update:model-value="onUpdate"
