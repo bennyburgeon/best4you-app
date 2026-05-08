@@ -15,7 +15,6 @@ const emit = defineEmits(['update:modelValue'])
 const onUpdate = (val) => emit('update:modelValue', val)
 
 const init = {
-  license_key: 'gpl',
   height: props.height,
   menubar: false,
   plugins: [
@@ -34,7 +33,7 @@ const init = {
   <div class="tinymce-editor-wrapper">
     <VLabel v-if="props.label" class="mb-2 d-block font-weight-medium">{{ props.label }}</VLabel>
     <Editor
-      tinymce-script-src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.3.0/tinymce.min.js"
+      api-key="c864fxd2xv3ravq3h92joto71cb8scfeg3zspnmw12lfyn3i"
       :init="init"
       :model-value="props.modelValue"
       @update:model-value="onUpdate"
