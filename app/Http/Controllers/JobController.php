@@ -44,6 +44,10 @@ class JobController extends Controller
             $query->where('job_category_id', $request->category_id);
         }
 
+        if ($request->filled('location')) {
+            $query->where('location', 'like', "%{$request->location}%");
+        }
+
         if ($request->has('industry_type_id')) {
             $query->where('industry_type_id', $request->industry_type_id);
         }
