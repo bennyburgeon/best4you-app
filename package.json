@@ -38,6 +38,7 @@
         "@mdi/font": "^7.4.47",
         "@tinymce/tinymce-vue": "^6.3.0",
         "@vitejs/plugin-vue": "^6.0.4",
+        "@vueup/vue-quill": "^1.2.0",
         "@vueuse/core": "^14.2.1",
         "@vueuse/math": "^14.2.1",
         "apexcharts": "^5.10.1",

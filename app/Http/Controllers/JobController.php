@@ -102,7 +102,6 @@ class JobController extends Controller
             'title' => 'required|string|max:255',
             'job_category_id' => 'required',
             'industry_type_id' => 'nullable|exists:industry_types,id',
-            'roles_and_responsibility' => 'required',
             'skills' => 'nullable|array',
             'client_id' => 'nullable|exists:clients,id',
             'currency_id' => 'nullable|exists:currencies,id',
