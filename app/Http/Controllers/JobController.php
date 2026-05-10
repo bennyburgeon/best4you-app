@@ -10,7 +10,7 @@ class JobController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Job::with(['category', 'skills', 'client', 'currency', 'industryType']);
+        $query = Job::with(['category', 'skills', 'client', 'currency', 'industryType', 'jobType']);
 
         // Frontend Date Filtering: Only show jobs that are currently open
         // (Admins can see everything if they pass a specific flag or we check auth)
@@ -67,6 +67,7 @@ class JobController extends Controller
             'title' => 'required|string|max:255',
             'job_category_id' => 'required',
             'industry_type_id' => 'nullable|exists:industry_types,id',
+            'job_type_id' => 'nullable|exists:job_types,id',
             'skills' => 'nullable|array',
             'client_id' => 'nullable|exists:clients,id',
             'currency_id' => 'nullable|exists:currencies,id',
@@ -82,17 +83,29 @@ class JobController extends Controller
         $data = $request->except('skills');
         $job = Job::create($data);
 
+        // Generate dynamic job code: BJ-{category symbol}-{job type}-{id}
+        $category = \App\Models\JobCategory::find($job->job_category_id);
+        $jobType = \App\Models\JobType::find($job->job_type_id);
+        
+        $catSymbol = $category->symbol ?: strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $category->name), 0, 3));
+        $typeLabel = $jobType ? strtoupper(substr($jobType->name, 0, 2)) : 'GEN';
+        $serial = str_pad($job->id, 4, '0', STR_PAD_LEFT);
+        
+        $job->update([
+            'job_code' => "BJ-{$catSymbol}-{$typeLabel}-{$serial}"
+        ]);
+
         if ($request->has('skills')) {
             $skillIds = $this->syncSkills($request->skills);
             $job->skills()->sync($skillIds);
         }
 
-        return response()->json($job->load('skills', 'client', 'currency', 'industryType'), 201);
+        return response()->json($job->load('skills', 'client', 'currency', 'industryType', 'jobType', 'category'), 201);
     }
 
     public function show(Job $job)
     {
-        return response()->json($job->load(['category', 'skills', 'client', 'currency', 'industryType']));
+        return response()->json($job->load(['category', 'skills', 'client', 'currency', 'industryType', 'jobType']));
     }
 
     public function update(Request $request, Job $job)
@@ -102,6 +115,7 @@ class JobController extends Controller
             'title' => 'required|string|max:255',
             'job_category_id' => 'required',
             'industry_type_id' => 'nullable|exists:industry_types,id',
+            'job_type_id' => 'nullable|exists:job_types,id',
             'skills' => 'nullable|array',
             'client_id' => 'nullable|exists:clients,id',
             'currency_id' => 'nullable|exists:currencies,id',
@@ -117,12 +131,24 @@ class JobController extends Controller
         $data = $request->except('skills');
         $job->update($data);
 
+        // Update dynamic job code if category or type changed
+        $category = \App\Models\JobCategory::find($job->job_category_id);
+        $jobType = \App\Models\JobType::find($job->job_type_id);
+        
+        $catSymbol = $category->symbol ?: strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $category->name), 0, 3));
+        $typeLabel = $jobType ? strtoupper(substr($jobType->name, 0, 2)) : 'GEN';
+        $serial = str_pad($job->id, 4, '0', STR_PAD_LEFT);
+        
+        $job->update([
+            'job_code' => "BJ-{$catSymbol}-{$typeLabel}-{$serial}"
+        ]);
+
         if ($request->has('skills')) {
             $skillIds = $this->syncSkills($request->skills);
             $job->skills()->sync($skillIds);
         }
 
-        return response()->json($job->load('skills', 'client', 'currency', 'industryType'));
+        return response()->json($job->load('skills', 'client', 'currency', 'industryType', 'jobType', 'category'));
     }
 
     public function destroy(Job $job)

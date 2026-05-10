@@ -144,7 +144,9 @@
 
                 <div class="job-card-main">
                   <div class="job-meta-top">
+                    <span v-if="job.job_code" class="code-pill"><i class="fa fa-hashtag"></i>{{ job.job_code }}</span>
                     <span class="category-pill">{{ job.category?.name || 'General' }}</span>
+                    <span v-if="job.job_type" class="type-pill"><i class="fa fa-star"></i>{{ job.job_type?.name }}</span>
                     <span><i class="fa fa-clock-o"></i>{{ formatDaysAgo(job.posted_days_ago) }}</span>
                   </div>
 
@@ -713,14 +715,29 @@ onMounted(() => {
   margin-right: 7px;
 }
 
-.category-pill {
-  background: #eef2fa;
+.category-pill,
+.code-pill,
+.type-pill {
   border-radius: 999px;
-  color: #1f4079;
   font-size: 12px;
   font-weight: 600;
   padding: 7px 12px;
   text-transform: uppercase;
+}
+
+.category-pill {
+  background: #eef2fa;
+  color: #1f4079;
+}
+
+.code-pill {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.type-pill {
+  background: #fff1f2;
+  color: #e11d48;
 }
 
 .job-card h3 {

@@ -14,8 +14,11 @@ class JobCategoryController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:255']);
-        $category = JobCategory::create($request->only('name', 'parent_category_id'));
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'symbol' => 'nullable|string|max:10'
+        ]);
+        $category = JobCategory::create($request->only('name', 'symbol', 'parent_category_id'));
         return response()->json($category, 201);
     }
 
@@ -26,8 +29,11 @@ class JobCategoryController extends Controller
 
     public function update(Request $request, JobCategory $jobCategory)
     {
-        $request->validate(['name' => 'required|string|max:255']);
-        $jobCategory->update($request->only('name', 'parent_category_id'));
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'symbol' => 'nullable|string|max:10'
+        ]);
+        $jobCategory->update($request->only('name', 'symbol', 'parent_category_id'));
         return response()->json($jobCategory);
     }
 

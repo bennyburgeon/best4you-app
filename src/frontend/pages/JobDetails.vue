@@ -13,7 +13,11 @@
         <div class="hero-card">
           <div class="role-mark">{{ initials(job.title) }}</div>
           <div class="role-intro">
-            <span class="category-pill">{{ job.category?.name || 'General' }}</span>
+            <div class="meta-row">
+              <span v-if="job.job_code" class="code-pill"><i class="fa fa-hashtag"></i>{{ job.job_code }}</span>
+              <span class="category-pill">{{ job.category?.name || 'General' }}</span>
+              <span v-if="job.job_type" class="type-pill"><i class="fa fa-star"></i>{{ job.job_type?.name }}</span>
+            </div>
             <h1>{{ job.title }}</h1>
             <div class="hero-facts">
               <span><i class="fa fa-map-marker"></i>{{ job.location || 'Remote' }}</span>
@@ -72,6 +76,13 @@
                   <div>
                     <span>Job Category</span>
                     <strong>{{ job.category?.name || 'General' }}</strong>
+                  </div>
+                </li>
+                <li v-if="job.job_type">
+                  <i class="fa fa-star"></i>
+                  <div>
+                    <span>Employment Type</span>
+                    <strong>{{ job.job_type.name }}</strong>
                   </div>
                 </li>
                 <li>
@@ -317,17 +328,38 @@ onMounted(fetchJob);
   width: 70px;
 }
 
-.category-pill {
-  background: rgba(255, 255, 255, 0.18);
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.category-pill,
+.code-pill,
+.type-pill {
   border-radius: 999px;
-  color: #fff;
   display: inline-flex;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0;
-  margin-bottom: 12px;
-  padding: 7px 12px;
+  padding: 6px 12px;
   text-transform: uppercase;
+}
+
+.category-pill {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.code-pill {
+  background: #fff;
+  color: #1f4079;
+}
+
+.type-pill {
+  background: #e11d48;
+  color: #fff;
 }
 
 .role-intro h1 {

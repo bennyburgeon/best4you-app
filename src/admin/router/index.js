@@ -23,6 +23,11 @@ const routes = [
                 component: () => import('@/admin/pages/IndustryTypes.vue'),
             },
             {
+                path: 'job-types',
+                name: 'admin.job-types',
+                component: () => import('@/admin/pages/JobTypes.vue'),
+            },
+            {
                 path: 'clients',
                 name: 'admin.clients',
                 component: () => import('@/admin/pages/Clients.vue'),

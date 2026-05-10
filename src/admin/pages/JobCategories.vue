@@ -8,7 +8,7 @@ const { hasPermission } = useAuth();
 const categories = ref([]);
 const loading = ref(false);
 const dialog = ref(false);
-const editedItem = ref({ id: null, name: '', parent_category_id: null });
+const editedItem = ref({ id: null, name: '', symbol: '', parent_category_id: null });
 
 const fetchCategories = async () => {
     loading.value = true;
@@ -26,7 +26,7 @@ const openDialog = (item = null) => {
     if (item) {
         editedItem.value = { ...item };
     } else {
-        editedItem.value = { id: null, name: '', parent_category_id: null };
+        editedItem.value = { id: null, name: '', symbol: '', parent_category_id: null };
     }
     dialog.value = true;
 }
@@ -72,6 +72,7 @@ onMounted(fetchCategories);
             :headers="[
               { title: 'ID', key: 'id' },
               { title: 'Name', key: 'name' },
+              { title: 'Symbol', key: 'symbol' },
               { title: 'Parent', key: 'parent.name' },
               { title: 'Actions', key: 'actions', sortable: false }
             ]"
@@ -94,8 +95,11 @@ onMounted(fetchCategories);
       <VCard :title="editedItem.id ? 'Edit Category' : 'New Category'">
         <VCardText>
           <VRow>
-            <VCol cols="12">
+            <VCol cols="12" md="8">
               <AppTextField v-model="editedItem.name" label="Category Name" placeholder="e.g., Information Technology" />
+            </VCol>
+            <VCol cols="12" md="4">
+              <AppTextField v-model="editedItem.symbol" label="Symbol" placeholder="e.g., IT" />
             </VCol>
             <VCol cols="12">
               <AppSelect2

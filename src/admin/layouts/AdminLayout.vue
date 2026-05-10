@@ -62,6 +62,7 @@ onMounted(async () => {
         <VListItem to="/admin" prepend-icon="bi-house-door" title="Dashboard"></VListItem>
         <VListItem v-if="hasPermission('view categories')" to="/admin/categories" prepend-icon="bi-list-ul" title="Categories"></VListItem>
         <VListItem v-if="hasPermission('view industry-types')" to="/admin/industry-types" prepend-icon="bi-briefcase" title="Industry Types"></VListItem>
+        <VListItem to="/admin/job-types" prepend-icon="bi-bookmark-star" title="Job Types"></VListItem>
         <VListItem v-if="hasPermission('view clients')" to="/admin/clients" prepend-icon="bi-building" title="Clients"></VListItem>
         <VListItem v-if="hasPermission('view jobs')" to="/admin/jobs" prepend-icon="bi-briefcase" title="Jobs"></VListItem>
         <VListItem v-if="hasPermission('view applications')" to="/admin/applications" prepend-icon="bi-file-earmark" title="Applications"></VListItem>

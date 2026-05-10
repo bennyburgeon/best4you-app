@@ -25,7 +25,8 @@ class Job extends Model
         'salary_to',
         'opening_date',
         'closing_date',
-        'gender_preference'
+        'gender_preference',
+        'job_type_id'
     ];
 
     protected $casts = [
@@ -56,5 +57,10 @@ class Job extends Model
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public function jobType()
+    {
+        return $this->belongsTo(JobType::class);
     }
 }

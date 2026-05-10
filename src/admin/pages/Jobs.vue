@@ -8,6 +8,7 @@ const { hasPermission } = useAuth();
 const jobs = ref([]);
 const categories = ref([]);
 const industryTypes = ref([]);
+const jobTypes = ref([]);
 const skills = ref([]);
 const loading = ref(false);
 const dialog = ref(false);
@@ -19,6 +20,7 @@ const editedItem = ref({
     company: '',
     client_id: null,
     industry_type_id: null,
+    job_type_id: null,
     location: '',
     salary: '',
     salary_from: null,
@@ -58,6 +60,13 @@ const fetchIndustryTypes = async () => {
     } catch (e) { console.error(e); }
 }
 
+const fetchJobTypes = async () => {
+    try {
+        const response = await axios.get('/job-types');
+        jobTypes.value = response.data;
+    } catch (e) { console.error(e); }
+}
+
 const fetchCategories = async () => {
     try {
         const response = await axios.get('/job-categories');
@@ -93,6 +102,7 @@ const openDialog = (item = null) => {
         editedItem.value = { 
             id: null, job_code: '', title: '', company: '', location: '', salary: '', 
             salary_from: null, salary_to: null, currency_id: null, industry_type_id: null,
+            job_type_id: null,
             experience_min: null, experience_max: null, client_id: null,
             job_category_id: null, roles_and_responsibility: '', 
             hr_incharge: '', email: '', opening_date: null, closing_date: null,
@@ -133,6 +143,7 @@ onMounted(() => {
     fetchJobs();
     fetchCategories();
     fetchIndustryTypes();
+    fetchJobTypes();
     fetchSkills();
     fetchCurrenciesAndClients();
 });
@@ -182,7 +193,7 @@ onMounted(() => {
         <VCardText>
           <VRow>
             <VCol cols="12" md="4">
-              <AppTextField v-model="editedItem.job_code" label="Job Code" placeholder="e.g. JB-001" />
+              <AppTextField v-model="editedItem.job_code" label="Job Code" readonly placeholder="Auto-generated on save" />
             </VCol>
             <VCol cols="12" md="8">
               <AppTextField v-model="editedItem.title" label="Position Title" />
@@ -194,7 +205,10 @@ onMounted(() => {
             <VCol cols="12" md="4">
               <AppSelect2 v-model="editedItem.job_category_id" :items="categories" item-title="name" item-value="id" label="Job Category" />
             </VCol>
-             <VCol cols="12" md="4">
+            <VCol cols="12" md="4">
+              <AppSelect2 v-model="editedItem.job_type_id" :items="jobTypes" item-title="name" item-value="id" label="Job Type" />
+            </VCol>
+            <VCol cols="12" md="4">
               <AppSelect2 v-model="editedItem.gender_preference" :items="['No Preference', 'Male', 'Female']" label="Gender Preference" />
             </VCol>
 
