@@ -52,7 +52,7 @@ class JobApplicationController extends Controller
         $application = JobApplication::create($data);
 
         if ($request->hasFile('resume')) {
-            $application->addMediaFromRequest('resume')->toMediaCollection('resume');
+            $application->addMediaFromRequest('resume')->toMediaCollection('resume', 's3');
         }
 
         if ($request->wantsJson()) {

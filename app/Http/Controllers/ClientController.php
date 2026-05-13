@@ -39,7 +39,7 @@ class ClientController extends Controller
         $client = Client::create($data);
 
         if ($request->hasFile('logo')) {
-            $client->addMediaFromRequest('logo')->toMediaCollection('logo');
+            $client->addMediaFromRequest('logo')->toMediaCollection('logo', 's3');
         }
 
         if ($request->wantsJson()) {
@@ -78,7 +78,7 @@ class ClientController extends Controller
 
         if ($request->hasFile('logo')) {
             $client->clearMediaCollection('logo');
-            $client->addMediaFromRequest('logo')->toMediaCollection('logo');
+            $client->addMediaFromRequest('logo')->toMediaCollection('logo', 's3');
         } elseif ($request->input('remove_logo')) {
             $client->clearMediaCollection('logo');
         }

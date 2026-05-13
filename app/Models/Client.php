@@ -23,9 +23,16 @@ class Client extends Model implements HasMedia
     
     protected $appends = ['logo'];
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('logo')
+             ->useDisk('s3')
+             ->singleFile();
+    }
+
     public function getLogoAttribute($value)
     {
         $media = $this->getFirstMediaUrl('logo');
-        return $media ?: $value; // fallback to original 'logo' database field or logic
+        return $media ?: $value;
     }
 }

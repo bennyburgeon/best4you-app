@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class JobCategory extends Model
 {
-    protected $fillable = ['name', 'parent_category_id'];
+    protected $fillable = ['name', 'symbol', 'parent_category_id'];
 
     public function parent()
     {

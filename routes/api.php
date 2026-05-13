@@ -14,6 +14,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\IndustryTypeController;
+use App\Http\Controllers\JobTypeController;
 
 // Auth Routes (Guest)
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -28,6 +29,7 @@ Route::get('/clients', [ClientController::class, 'index']);
 Route::get('/skills', [SkillController::class, 'index']);
 Route::get('/currencies', [CurrencyController::class, 'index']);
 Route::get('/industry-types', [IndustryTypeController::class, 'index']);
+Route::get('/job-types', [JobTypeController::class, 'index']);
 
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function () {
