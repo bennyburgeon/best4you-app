@@ -13,39 +13,49 @@
         @endcan
     </div>
     <div class="table-responsive text-nowrap">
-        <table class="table table-hover">
+        <table class="table table-hover datatable w-100">
             <thead>
                 <tr>
                     <th>User</th>
                     <th>Email</th>
                     <th>Roles</th>
                     <th>Date Created</th>
-                    <th class="text-end">Actions</th>
+                    <th class="text-center" style="width: 100px;">Actions</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
                 @foreach($users as $user)
                 <tr>
-                    <td><strong>{{ $user->name }}</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-xs me-2">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=696cff&color=fff" alt="Avatar" class="rounded-circle">
+                            </div>
+                            <span class="fw-semibold">{{ $user->name }}</span>
+                        </div>
+                    </td>
                     <td>{{ $user->email }}</td>
                     <td>
                         @foreach($user->roles as $role)
-                            <span class="badge bg-label-secondary mb-1">{{ $role->name }}</span>
+                            <span class="badge bg-label-primary mb-1">{{ $role->name }}</span>
                         @endforeach
                     </td>
-                    <td>{{ $user->created_at->format('d/m/Y') }}</td>
-                    <td class="text-end">
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <td>
+                        <span class="text-muted"><i class="bi bi-calendar3 me-1"></i> {{ $user->created_at->format('M d, Y') }}</span>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-inline-block">
+                            <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu dropdown-menu-end">
                                 @can('edit users')
                                 <a class="dropdown-item" href="javascript:void(0);" onclick="editUser({{ $user->toJson() }})">
                                     <i class="bi bi-pencil-square me-1"></i> Edit
                                 </a>
                                 @endcan
                                 @can('delete users')
+                                <div class="dropdown-divider"></div>
                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?')">
                                     @csrf
                                     @method('DELETE')
@@ -114,9 +124,6 @@
     </div>
 </div>
 
-<style>
-    .bg-label-secondary { background-color: #ebeef0 !important; color: #8592a3 !important; }
-</style>
 
 @push('scripts')
 <script>

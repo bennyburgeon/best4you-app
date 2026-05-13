@@ -13,7 +13,7 @@
         @endcan
     </div>
     <div class="table-responsive text-nowrap">
-        <table class="table table-hover">
+        <table class="table table-hover datatable w-100">
             <thead>
                 <tr>
                     <th>Job Title</th>
@@ -21,31 +21,40 @@
                     <th>Category</th>
                     <th>Client</th>
                     <th>Dates</th>
-                    <th class="text-end">Actions</th>
+                    <th class="text-center" style="width: 100px;">Actions</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
                 @foreach($jobs as $job)
                 <tr>
                     <td>
-                        <strong>{{ $job->title }}</strong><br>
-                        <small class="text-muted">{{ $job->industryType ? $job->industryType->name : '' }}</small>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-xs me-2">
+                                <span class="avatar-initial rounded-circle bg-label-primary"><i class="bi bi-briefcase"></i></span>
+                            </div>
+                            <div>
+                                <span class="fw-semibold d-block">{{ $job->title }}</span>
+                                <small class="text-muted">{{ $job->industryType ? $job->industryType->name : 'N/A' }}</small>
+                            </div>
+                        </div>
                     </td>
                     <td><span class="badge bg-label-info">{{ $job->job_code ?: 'N/A' }}</span></td>
-                    <td>{{ $job->category ? $job->category->name : 'N/A' }}</td>
+                    <td>
+                        <span class="badge bg-label-secondary">{{ $job->category ? $job->category->name : 'N/A' }}</span>
+                    </td>
                     <td>{{ $job->client ? $job->client->title : 'N/A' }}</td>
                     <td>
-                        <small>
-                            Open: {{ $job->opening_date ? \Carbon\Carbon::parse($job->opening_date)->format('d/m/Y') : 'N/A' }}<br>
-                            Close: {{ $job->closing_date ? \Carbon\Carbon::parse($job->closing_date)->format('d/m/Y') : 'N/A' }}
-                        </small>
+                        <div class="d-flex flex-column">
+                            <small class="text-success"><i class="bi bi-calendar-check me-1"></i> {{ $job->opening_date ? \Carbon\Carbon::parse($job->opening_date)->format('M d, Y') : 'N/A' }}</small>
+                            <small class="text-danger"><i class="bi bi-calendar-x me-1"></i> {{ $job->closing_date ? \Carbon\Carbon::parse($job->closing_date)->format('M d, Y') : 'N/A' }}</small>
+                        </div>
                     </td>
-                    <td class="text-end">
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <td class="text-center">
+                        <div class="d-inline-block">
+                            <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="{{ route('jobs.show', $job->id) }}">
                                     <i class="bi bi-eye me-1"></i> View
                                 </a>
@@ -55,6 +64,7 @@
                                 </a>
                                 @endcan
                                 @can('delete jobs')
+                                <div class="dropdown-divider"></div>
                                 <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this job?')">
                                     @csrf
                                     @method('DELETE')
@@ -71,9 +81,4 @@
             </tbody>
         </table>
     </div>
-</div>
-
-<style>
-    .bg-label-info { background-color: #d7f5fc !important; color: #03c3ec !important; }
-</style>
 @endsection

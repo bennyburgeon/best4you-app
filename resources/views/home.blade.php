@@ -1,44 +1,124 @@
 @extends('layouts.app')
 
+@section('title', 'Home')
+
 @section('content')
-<!-- Hero Section -->
-<section class="py-5 bg-white">
-    <div class="container py-5">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4">Find Your Dream Job with <span class="text-primary">Best4You</span></h1>
-                <p class="lead mb-5 text-muted">We connect top talent with industry leaders. Discover thousands of job opportunities across various industries.</p>
-                <div class="d-flex gap-3">
-                    <a href="/jobs" class="btn btn-primary btn-lg px-5 rounded-pill">Browse Jobs</a>
-                    <a href="/upload-resume" class="btn btn-outline-secondary btn-lg px-5 rounded-pill">Upload Resume</a>
+<section class="slider" style="z-index:999">
+    <div class="hero-slider">
+        <div class="single-slider" style="background-image:url('/frontend/assets/img/slider.webp')">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="text">
+                            <h1>Best <span>Job Consultancy </span> in India<span> Find Your Dream Job</span> with Confidence</h1>
+                            <p>We connect skilled job seekers with trusted employers in India and abroad - helping you build a successful career.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-6 d-none d-lg-block text-center">
-                <img src="https://img.freepik.com/free-vector/job-interview-concept-illustration_114360-1532.jpg" alt="Hero" class="img-fluid" width="500">
+        </div>
+        <div class="single-slider" style="background-image:url('/frontend/assets/img/slider2.webp')">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="text">
+                            <h1>Best <span>Job Consultancy </span> in India<span> Find Your Dream Job</span> with Confidence</h1>
+                            <p>We connect skilled job seekers with trusted employers in India and abroad - helping you build a successful career.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="single-slider" style="background-image:url('/frontend/assets/img/slider3.webp')">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="text">
+                            <h1>Best <span>Job Consultancy </span> in India<span> Find Your Dream Job</span> with Confidence</h1>
+                            <p>We connect skilled job seekers with trusted employers in India and abroad - helping you build a successful career.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="global-search-overlay w-100" style="position:absolute;top:70%;left:0;transform:translateY(-50%);z-index:100;pointer-events:none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9" style="pointer-events:auto;">
+                    <div class="search-container shadow-lg bg-white" style="border-radius:50px;padding:6px 6px 6px 20px;">
+                        <form action="{{ route('public.jobs') }}" method="GET" class="row g-0 align-items-center m-0">
+                            <div class="col-md-5 border-end">
+                                <div class="input-group align-items-center">
+                                    <i class="fa fa-search text-muted fs-5"></i>
+                                    <input type="text" name="search" class="form-control border-0 shadow-none py-3 fs-6" placeholder="Job title, skills, or company" style="background:transparent;">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group align-items-center ms-3">
+                                    <i class="fa fa-map-marker text-muted fs-5"></i>
+                                    <input type="text" name="location" class="form-control border-0 shadow-none py-3 fs-6" placeholder="Location (e.g. Dubai, India)" style="background:transparent;">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary w-100 fw-bold" style="border-radius:40px;padding:14px 0;font-size:16px;">Search Jobs</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Stats Section -->
-<section class="py-5 bg-light">
+<section class="schedule">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-md-3 mb-4">
-                <h2 class="fw-bold text-primary">500+</h2>
-                <p class="text-muted">Active Jobs</p>
-            </div>
-            <div class="col-md-3 mb-4">
-                <h2 class="fw-bold text-primary">200+</h2>
-                <p class="text-muted">Trusted Companies</p>
-            </div>
-            <div class="col-md-3 mb-4">
-                <h2 class="fw-bold text-primary">10k+</h2>
-                <p class="text-muted">Candidates</p>
-            </div>
-            <div class="col-md-3 mb-4">
-                <h2 class="fw-bold text-primary">1k+</h2>
-                <p class="text-muted">Successful Hires</p>
+        <div class="schedule-inner">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="single-schedule first">
+                        <div class="inner">
+                            <div class="icon"><i class="fa fa-file-text"></i></div>
+                            <div class="single-content">
+                                <span>Career Assistance</span>
+                                <h4>Resume & Profile Building</h4>
+                                <p>We help job seekers create professional resumes and optimize profiles to stand out.</p>
+                                <a href="#">LEARN MORE<i class="fa fa-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="single-schedule middle">
+                        <div class="inner">
+                            <div class="icon"><i class="fa fa-users"></i></div>
+                            <div class="single-content">
+                                <span>Expert Guidance</span>
+                                <h4>Career Counseling</h4>
+                                <p>Get one-on-one sessions with our career experts to define a successful path.</p>
+                                <a href="#">LEARN MORE<i class="fa fa-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-12">
+                    <div class="single-schedule last">
+                        <div class="inner">
+                            <div class="icon"><i class="fa fa-clock-o"></i></div>
+                            <div class="single-content">
+                                <span>Visit Us</span>
+                                <h4>Working Hours</h4>
+                                <ul class="time-sidual">
+                                    <li class="day">Monday - Friday <span>9:00 AM - 6:00 PM</span></li>
+                                    <li class="day">Saturday <span>10:00 AM - 4:00 PM</span></li>
+                                    <li class="day">Sunday <span>Closed</span></li>
+                                </ul>
+                                <a href="#">LEARN MORE<i class="fa fa-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

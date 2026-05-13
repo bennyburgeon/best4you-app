@@ -67,7 +67,7 @@ class JobController extends Controller
 
     public function publicIndex(Request $request)
     {
-        $query = Job::with(['category', 'client', 'currency', 'industryType']);
+        $query = Job::with(['category', 'client', 'currency', 'industryType', 'skills', 'jobType']);
         
         $today = now()->toDateString();
         $query->where(function($q) use ($today) {
@@ -76,14 +76,43 @@ class JobController extends Controller
             $q->whereNull('closing_date')->orWhere('closing_date', '>=', $today);
         });
 
-        if ($request->has('category')) {
-            $query->where('job_category_id', $request->category);
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('job_code', 'like', "%{$search}%")
+                    ->orWhere('company', 'like', "%{$search}%")
+                    ->orWhereHas('client', function ($cq) use ($search) {
+                        $cq->where('title', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('skills', function ($sq) use ($search) {
+                        $sq->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($request->filled('location')) {
+            $query->where('location', 'like', "%{$request->location}%");
+        }
+
+        if ($request->filled('category_id')) {
+            $query->where('job_category_id', $request->category_id);
         }
 
         $jobs = $query->latest()->paginate(10);
+        $jobs->getCollection()->transform(function ($job) {
+            $job->posted_days_ago = $job->created_at ? $job->created_at->diffInDays(now()) : 0;
+            return $job;
+        });
         $categories = JobCategory::all();
 
         return view('jobs', compact('jobs', 'categories'));
+    }
+
+    public function publicShow(Job $job)
+    {
+        $job->load(['category', 'skills', 'client', 'currency', 'industryType', 'jobType']);
+        return view('jobs.show', compact('job'));
     }
 
     public function create()
@@ -136,12 +165,28 @@ class JobController extends Controller
             $job->skills()->sync($skillIds);
         }
 
-        return response()->json($job->load('skills', 'client', 'currency', 'industryType'), 201);
+        if ($request->wantsJson()) {
+            return response()->json($job->load('skills', 'client', 'currency', 'industryType'), 201);
+        }
+        return redirect()->route('jobs.index')->with('success', 'Job created successfully');
     }
 
     public function show(Job $job)
     {
-        return response()->json($job->load(['category', 'skills', 'client', 'currency', 'industryType']));
+        if (request()->wantsJson()) {
+            return response()->json($job->load(['category', 'skills', 'client', 'currency', 'industryType']));
+        }
+        return view('admin.jobs.show', compact('job'));
+    }
+
+    public function edit(Job $job)
+    {
+        $categories = JobCategory::all();
+        $industries = IndustryType::all();
+        $clients = Client::all();
+        $currencies = Currency::all();
+        $skills = Skill::all();
+        return view('admin.jobs.edit', compact('job', 'categories', 'industries', 'clients', 'currencies', 'skills'));
     }
 
     public function update(Request $request, Job $job)
@@ -184,7 +229,10 @@ class JobController extends Controller
             $job->skills()->sync($skillIds);
         }
 
-        return response()->json($job->load('skills', 'client', 'currency', 'industryType'));
+        if ($request->wantsJson()) {
+            return response()->json($job->load('skills', 'client', 'currency', 'industryType'));
+        }
+        return redirect()->route('jobs.index')->with('success', 'Job updated successfully');
     }
 
     public function destroy(Job $job)

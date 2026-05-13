@@ -12,49 +12,8 @@
         </button>
         @endcan
     </div>
-    <div class="table-responsive text-nowrap">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Category Name</th>
-                    <th>Parent Category</th>
-                    <th>Date Created</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="table-border-bottom-0">
-                @foreach($categories as $category)
-                <tr>
-                    <td><strong>{{ $category->name }}</strong></td>
-                    <td>{{ $category->parent ? $category->parent->name : 'Main Category' }}</td>
-                    <td>{{ $category->created_at->format('d/m/Y') }}</td>
-                    <td class="text-end">
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                <i class="bi bi-three-dots-vertical"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                @can('edit categories')
-                                <a class="dropdown-item" href="javascript:void(0);" onclick="editCategory({{ $category->toJson() }})">
-                                    <i class="bi bi-pencil-square me-1"></i> Edit
-                                </a>
-                                @endcan
-                                @can('delete categories')
-                                <form action="{{ route('job-categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="dropdown-item text-danger">
-                                        <i class="bi bi-trash me-1"></i> Delete
-                                    </button>
-                                </form>
-                                @endcan
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <div class="table-responsive text-nowrap p-3">
+        {{ $dataTable->table(['class' => 'table table-hover w-100']) }}
     </div>
 </div>
 
@@ -96,6 +55,7 @@
 </div>
 
 @push('scripts')
+{{ $dataTable->scripts() }}
 <script>
     function resetForm() {
         document.getElementById('categoryForm').action = "{{ route('job-categories.store') }}";

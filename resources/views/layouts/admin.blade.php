@@ -15,6 +15,10 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+    
     <style>
         :root {
             --sidebar-width: 260px;
@@ -136,6 +140,101 @@
                 margin-left: 0;
             }
         }
+        /* DataTables Custom Styling */
+        .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
+            padding: 1rem 1.5rem;
+        }
+        .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_paginate {
+            padding: 1rem 1.5rem;
+        }
+        table.dataTable thead th {
+            border-bottom: 1px solid #d9dee3 !important;
+            background-color: #f5f5f9 !important;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .pagination .page-link {
+            border-radius: 0.375rem;
+            margin: 0 2px;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Avatar & Label Helpers */
+        .avatar {
+            position: relative;
+            width: 2.375rem;
+            height: 2.375rem;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .avatar-xs {
+            width: 1.625rem;
+            height: 1.625rem;
+        }
+        .avatar-initial {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            background-color: #eee;
+            font-weight: 500;
+        }
+        .bg-label-primary {
+            background-color: #e7e7ff !important;
+            color: #696cff !important;
+        }
+        .bg-label-secondary {
+            background-color: #ebeef1 !important;
+            color: #8592a3 !important;
+        }
+        .bg-label-success {
+            background-color: #e8fadf !important;
+            color: #71dd37 !important;
+        }
+        .bg-label-info {
+            background-color: #d7f5fc !important;
+            color: #03c3ec !important;
+        }
+        .bg-label-warning {
+            background-color: #fff2d6 !important;
+            color: #ffab00 !important;
+        }
+        .bg-label-danger {
+            background-color: #ffe5e5 !important;
+            color: #ff3e1d !important;
+        }
+        .btn-icon {
+            padding: 0;
+            width: 2.375rem;
+            height: 2.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-sm.btn-icon {
+            width: 2rem;
+            height: 2rem;
+        }
+        .btn-label-primary {
+            color: #696cff;
+            border-color: transparent;
+            background: #e7e7ff;
+        }
+        .btn-label-primary:hover {
+            border-color: transparent;
+            background: #696cff;
+            color: #fff;
+        }
     </style>
     @stack('styles')
 </head>
@@ -161,7 +260,7 @@
 
                 @can('view categories')
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('admin/categories*') ? 'active' : '' }}" href="{{ url('/admin/categories') }}">
+                    <a class="nav-link {{ request()->is('admin/job-categories*') ? 'active' : '' }}" href="{{ url('/admin/job-categories') }}">
                         <i class="bi bi-list-ul"></i>
                         <span>Categories</span>
                     </a>
@@ -197,7 +296,7 @@
 
                 @can('view applications')
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('admin/applications*') ? 'active' : '' }}" href="{{ url('/admin/applications') }}">
+                    <a class="nav-link {{ request()->is('admin/job-applications*') ? 'active' : '' }}" href="{{ url('/admin/job-applications') }}">
                         <i class="bi bi-file-earmark"></i>
                         <span>Applications</span>
                     </a>
@@ -206,7 +305,7 @@
 
                 @can('view skills')
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('admin/tools*') ? 'active' : '' }}" href="{{ url('/admin/tools') }}">
+                    <a class="nav-link {{ request()->is('admin/skills*') ? 'active' : '' }}" href="{{ url('/admin/skills') }}">
                         <i class="bi bi-wrench"></i>
                         <span>Skills</span>
                     </a>
@@ -297,8 +396,33 @@
         </div>
     </div>
 
-    <!-- Bootstrap 5 JS Bundle -->
+    <!-- Core JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            if ($('.datatable').length > 0) {
+                $('.datatable').DataTable({
+                    responsive: true,
+                    dom: '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                    language: {
+                        paginate: {
+                            next: '<i class="bi bi-chevron-right"></i>',
+                            previous: '<i class="bi bi-chevron-left"></i>'
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
     @stack('scripts')
 </body>
 </html>

@@ -40,7 +40,10 @@ class UserController extends Controller
             $user->syncRoles($request->roles);
         }
 
-        return response()->json($user->load('roles'), 201);
+        if ($request->wantsJson()) {
+            return response()->json($user->load('roles'), 201);
+        }
+        return redirect()->route('users.index')->with('success', 'User created successfully');
     }
 
     public function show(string $id)
@@ -70,13 +73,19 @@ class UserController extends Controller
             $user->syncRoles($request->roles);
         }
 
-        return response()->json($user->load('roles'));
+        if ($request->wantsJson()) {
+            return response()->json($user->load('roles'));
+        }
+        return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+        return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }
 }

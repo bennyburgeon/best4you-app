@@ -31,7 +31,10 @@ class RoleController extends Controller
             $role->syncPermissions($request->permissions);
         }
 
-        return response()->json($role->load('permissions'), 201);
+        if ($request->wantsJson()) {
+            return response()->json($role->load('permissions'), 201);
+        }
+        return redirect()->route('roles.index')->with('success', 'Role created successfully');
     }
 
     public function show(string $id)
@@ -53,13 +56,19 @@ class RoleController extends Controller
             $role->syncPermissions($request->permissions);
         }
 
-        return response()->json($role->load('permissions'));
+        if ($request->wantsJson()) {
+            return response()->json($role->load('permissions'));
+        }
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully');
     }
 
     public function destroy(string $id)
     {
         $role = Role::findOrFail($id);
         $role->delete();
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully');
     }
 }

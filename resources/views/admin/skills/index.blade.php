@@ -13,31 +13,41 @@
         @endcan
     </div>
     <div class="table-responsive text-nowrap">
-        <table class="table table-hover">
+        <table class="table table-hover datatable w-100">
             <thead>
                 <tr>
                     <th>Skill Name</th>
                     <th>Date Created</th>
-                    <th class="text-end">Actions</th>
+                    <th class="text-center" style="width: 100px;">Actions</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
                 @foreach($skills as $skill)
                 <tr>
-                    <td><strong>{{ $skill->name }}</strong></td>
-                    <td>{{ $skill->created_at->format('d/m/Y') }}</td>
-                    <td class="text-end">
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-xs me-2">
+                                <span class="avatar-initial rounded-circle bg-label-warning"><i class="bi bi-star"></i></span>
+                            </div>
+                            <span class="fw-semibold">{{ $skill->name }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="text-muted"><i class="bi bi-calendar3 me-1"></i> {{ $skill->created_at->format('M d, Y') }}</span>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-inline-block">
+                            <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu dropdown-menu-end">
                                 @can('edit skills')
                                 <a class="dropdown-item" href="javascript:void(0);" onclick="editSkill({{ $skill->toJson() }})">
                                     <i class="bi bi-pencil-square me-1"></i> Edit
                                 </a>
                                 @endcan
                                 @can('delete skills')
+                                <div class="dropdown-divider"></div>
                                 <form action="{{ route('skills.destroy', $skill->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this skill?')">
                                     @csrf
                                     @method('DELETE')

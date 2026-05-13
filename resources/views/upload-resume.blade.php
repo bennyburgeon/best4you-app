@@ -23,7 +23,7 @@
 
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4">
-                        <form action="{{ route('job-applications.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('public.job-applications.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label">Full Name</label>

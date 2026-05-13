@@ -13,35 +13,45 @@
         @endcan
     </div>
     <div class="table-responsive text-nowrap">
-        <table class="table table-hover">
+        <table class="table table-hover datatable w-100">
             <thead>
                 <tr>
                     <th>Currency Name</th>
                     <th>Code</th>
                     <th>Symbol</th>
                     <th>Date Created</th>
-                    <th class="text-end">Actions</th>
+                    <th class="text-center" style="width: 100px;">Actions</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
                 @foreach($currencies as $currency)
                 <tr>
-                    <td><strong>{{ $currency->name }}</strong></td>
-                    <td>{{ $currency->code }}</td>
-                    <td>{{ $currency->symbol }}</td>
-                    <td>{{ $currency->created_at->format('d/m/Y') }}</td>
-                    <td class="text-end">
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-xs me-2">
+                                <span class="avatar-initial rounded-circle bg-label-info"><i class="bi bi-cash-stack"></i></span>
+                            </div>
+                            <span class="fw-semibold">{{ $currency->name }}</span>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-label-primary">{{ $currency->code }}</span></td>
+                    <td><span class="badge bg-label-secondary">{{ $currency->symbol }}</span></td>
+                    <td>
+                        <span class="text-muted"><i class="bi bi-calendar3 me-1"></i> {{ $currency->created_at->format('M d, Y') }}</span>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-inline-block">
+                            <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu dropdown-menu-end">
                                 @can('edit currencies')
                                 <a class="dropdown-item" href="javascript:void(0);" onclick="editCurrency({{ $currency->toJson() }})">
                                     <i class="bi bi-pencil-square me-1"></i> Edit
                                 </a>
                                 @endcan
                                 @can('delete currencies')
+                                <div class="dropdown-divider"></div>
                                 <form action="{{ route('currencies.destroy', $currency->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this currency?')">
                                     @csrf
                                     @method('DELETE')

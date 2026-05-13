@@ -94,7 +94,7 @@ class ClientController extends Controller
     {
         $client->clearMediaCollection('logo');
         $client->delete();
-        if ($request->wantsJson()) {
+        if (request()->wantsJson()) {
             return response()->json(null, 204);
         }
         return redirect()->route('clients.index')->with('success', 'Client deleted successfully');

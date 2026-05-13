@@ -13,35 +13,43 @@
         @endcan
     </div>
     <div class="table-responsive text-nowrap">
-        <table class="table table-hover">
+        <table class="table table-hover datatable w-100">
             <thead>
                 <tr>
                     <th>Role Name</th>
                     <th>Permissions</th>
-                    <th class="text-end">Actions</th>
+                    <th class="text-center" style="width: 100px;">Actions</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
                 @foreach($roles as $role)
                 <tr>
-                    <td><strong>{{ $role->name }}</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar avatar-xs me-2">
+                                <span class="avatar-initial rounded-circle bg-label-primary"><i class="bi bi-shield-check"></i></span>
+                            </div>
+                            <span class="fw-semibold">{{ $role->name }}</span>
+                        </div>
+                    </td>
                     <td style="max-width: 400px; white-space: normal;">
                         @foreach($role->permissions as $permission)
-                            <span class="badge bg-label-primary mb-1">{{ $permission->name }}</span>
+                            <span class="badge bg-label-info mb-1">{{ $permission->name }}</span>
                         @endforeach
                     </td>
-                    <td class="text-end">
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <td class="text-center">
+                        <div class="d-inline-block">
+                            <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu dropdown-menu-end">
                                 @can('edit roles')
                                 <a class="dropdown-item" href="javascript:void(0);" onclick="editRole({{ $role->toJson() }})">
                                     <i class="bi bi-pencil-square me-1"></i> Edit
                                 </a>
                                 @endcan
                                 @can('delete roles')
+                                <div class="dropdown-divider"></div>
                                 <form action="{{ route('roles.destroy', $role->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this role?')">
                                     @csrf
                                     @method('DELETE')
@@ -101,9 +109,6 @@
     </div>
 </div>
 
-<style>
-    .bg-label-primary { background-color: #e7e7ff !important; color: #696cff !important; }
-</style>
 
 @push('scripts')
 <script>
