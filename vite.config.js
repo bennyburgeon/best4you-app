@@ -59,7 +59,18 @@ export default defineConfig({
 
 
     build: {
-        chunkSizeWarningLimit: 5000,
+        chunkSizeWarningLimit: 2000,
+        sourcemap: false,
+        minify: 'esbuild',
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vuetify': ['vuetify'],
+                    'apexcharts': ['apexcharts', 'vue3-apexcharts'],
+                    'tinymce': ['tinymce'],
+                }
+            }
+        }
     },
     optimizeDeps: {
         exclude: ['vuetify'],

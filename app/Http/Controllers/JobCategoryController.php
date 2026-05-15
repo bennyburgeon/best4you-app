@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 
 class JobCategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(JobCategory::with('parent')->get());
+        $categories = JobCategory::with('parent')->get();
+        if ($request->wantsJson()) {
+            return response()->json($categories);
+        }
+        $parentCategories = JobCategory::whereNull('parent_category_id')->get();
+        return view('admin.categories.index', compact('categories', 'parentCategories'));
     }
 
     public function store(Request $request)
@@ -19,7 +24,10 @@ class JobCategoryController extends Controller
             'symbol' => 'nullable|string|max:10'
         ]);
         $category = JobCategory::create($request->only('name', 'symbol', 'parent_category_id'));
-        return response()->json($category, 201);
+        if ($request->wantsJson()) {
+            return response()->json($category, 201);
+        }
+        return redirect()->route('job-categories.index')->with('success', 'Category created successfully');
     }
 
     public function show(JobCategory $jobCategory)
@@ -34,12 +42,19 @@ class JobCategoryController extends Controller
             'symbol' => 'nullable|string|max:10'
         ]);
         $jobCategory->update($request->only('name', 'symbol', 'parent_category_id'));
-        return response()->json($jobCategory);
+        if ($request->wantsJson()) {
+            return response()->json($jobCategory);
+        }
+        return redirect()->route('job-categories.index')->with('success', 'Category updated successfully');
     }
 
     public function destroy(JobCategory $jobCategory)
     {
         $jobCategory->delete();
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+        return redirect()->route('job-categories.index')->with('success', 'Category deleted successfully');
     }
+}
 }

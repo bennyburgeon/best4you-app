@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 
 class IndustryTypeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(IndustryType::all());
+        $industryTypes = IndustryType::all();
+        if ($request->wantsJson()) {
+            return response()->json($industryTypes);
+        }
+        return view('admin.industry_types.index', compact('industryTypes'));
     }
 
     public function store(Request $request)
@@ -20,7 +24,10 @@ class IndustryTypeController extends Controller
 
         $industryType = IndustryType::create($request->all());
 
-        return response()->json($industryType, 201);
+        if ($request->wantsJson()) {
+            return response()->json($industryType, 201);
+        }
+        return redirect()->route('industry-types.index')->with('success', 'Industry type created successfully');
     }
 
     public function show(IndustryType $industryType)
@@ -36,12 +43,18 @@ class IndustryTypeController extends Controller
 
         $industryType->update($request->all());
 
-        return response()->json($industryType);
+        if ($request->wantsJson()) {
+            return response()->json($industryType);
+        }
+        return redirect()->route('industry-types.index')->with('success', 'Industry type updated successfully');
     }
 
     public function destroy(IndustryType $industryType)
     {
         $industryType->delete();
-        return response()->json(null, 204);
+        if (request()->wantsJson()) {
+            return response()->json(null, 204);
+        }
+        return redirect()->route('industry-types.index')->with('success', 'Industry type deleted successfully');
     }
 }

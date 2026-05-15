@@ -12,56 +12,7 @@ const routes = [
                 name: 'admin.dashboard',
                 component: () => import('@/admin/pages/Dashboard.vue'),
             },
-            {
-                path: 'categories',
-                name: 'admin.categories',
-                component: () => import('@/admin/pages/JobCategories.vue'),
-            },
-            {
-                path: 'industry-types',
-                name: 'admin.industry-types',
-                component: () => import('@/admin/pages/IndustryTypes.vue'),
-            },
-            {
-                path: 'job-types',
-                name: 'admin.job-types',
-                component: () => import('@/admin/pages/JobTypes.vue'),
-            },
-            {
-                path: 'clients',
-                name: 'admin.clients',
-                component: () => import('@/admin/pages/Clients.vue'),
-            },
-            {
-                path: 'jobs',
-                name: 'admin.jobs',
-                component: () => import('@/admin/pages/Jobs.vue'),
-            },
-            {
-                path: 'applications',
-                name: 'admin.applications',
-                component: () => import('@/admin/pages/JobApplications.vue'),
-            },
-            {
-                path: 'skills',
-                name: 'admin.skills',
-                component: () => import('@/admin/pages/Skills.vue'),
-            },
-            {
-                path: 'currencies',
-                name: 'admin.currencies',
-                component: () => import('@/admin/pages/Currencies.vue'),
-            },
-            {
-                path: 'roles',
-                name: 'admin.roles',
-                component: () => import('@/admin/pages/Roles.vue'),
-            },
-            {
-                path: 'users',
-                name: 'admin.users',
-                component: () => import('@/admin/pages/Users.vue'),
-            }
+            // Other routes migrated to Blade
         ]
     },
     {
