@@ -39,10 +39,8 @@
     <link rel="stylesheet" href="/frontend/assets/style.css" />
     <link rel="stylesheet" href="/frontend/assets/css/responsive.css" />
 
-    @vite(['src/frontend/main.js'])
 </head>
 <body>
-    <div id="app"></div>
 
     <!-- jquery Min JS -->
     <script src="/frontend/assets/js/jquery.min.js"></script>

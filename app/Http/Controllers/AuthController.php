@@ -37,11 +37,16 @@ class AuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
             $user = Auth::user();
-            return response()->json([
-                'user' => $user,
-                'roles' => $user->getRoleNames(),
-                'permissions' => $user->getAllPermissions()->pluck('name')
-            ], 200);
+            
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'user' => $user,
+                    'roles' => $user->getRoleNames(),
+                    'permissions' => $user->getAllPermissions()->pluck('name')
+                ], 200);
+            }
+
+            return redirect()->intended('/admin');
         }
 
         throw ValidationException::withMessages([
@@ -54,7 +59,12 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return response()->json(['message' => 'Logged out successfully']);
+        
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Logged out successfully']);
+        }
+        
+        return redirect('/admin/login');
     }
 
     public function user(Request $request)

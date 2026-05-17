@@ -22,6 +22,8 @@ Route::get('/', function () {
 Route::get('/admin/login', function () {
     return view('admin');
 })->name('login');
+Route::post('/admin/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login.post');
+Route::post('/admin/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 
 // Admin routes (Blade)
 Route::middleware(['auth'])->prefix('admin')->group(function () {
@@ -40,7 +42,3 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('permissions', PermissionController::class);
 });
 
-// Catch-all for Frontend Vue SPA (if any remains)
-Route::get('/{any?}', function () {
-    return view('frontend');
-})->where('any', '.*');
