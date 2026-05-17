@@ -11,7 +11,16 @@ class UserController extends Controller
 {
     public function index()
     {
-        return response()->json(User::with('roles')->get());
+        return view('admin.users.index', [
+            'items' => User::with('roles')->get(),
+            'roles' => \Spatie\Permission\Models\Role::all()
+        ]);
+    }
+
+    
+    public function create()
+    {
+        return view('admin.users.create');
     }
 
     public function store(Request $request)
@@ -33,12 +42,18 @@ class UserController extends Controller
             $user->syncRoles($request->roles);
         }
 
-        return response()->json($user->load('roles'), 201);
+        return redirect()->route('users.index')->with('success', 'Created successfully!');
     }
 
     public function show(string $id)
     {
-        return response()->json(User::with('roles')->findOrFail($id));
+        return redirect()->route('users.index')->with('success', 'Updated successfully!');
+    }
+
+    
+    public function edit(User $user)
+    {
+        return view('admin.users.edit', ['item' => $user]);
     }
 
     public function update(Request $request, string $id)
@@ -63,13 +78,13 @@ class UserController extends Controller
             $user->syncRoles($request->roles);
         }
 
-        return response()->json($user->load('roles'));
+        return redirect()->route('users.index')->with('success', 'Updated successfully!');
     }
 
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json(null, 204);
+        return redirect()->route('users.index')->with('success', 'Updated successfully!');
     }
 }

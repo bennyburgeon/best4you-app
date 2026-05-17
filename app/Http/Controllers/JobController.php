@@ -57,7 +57,20 @@ class JobController extends Controller
             return $job;
         });
 
-        return response()->json($jobs);
+        return view('admin.jobs.index', ['items' => $jobs]);
+    }
+
+    
+    public function create()
+    {
+        return view('admin.jobs.create', [
+            'categories' => \App\Models\JobCategory::all(),
+            'industryTypes' => \App\Models\IndustryType::all(),
+            'jobTypes' => \App\Models\JobType::all(),
+            'clientsList' => \App\Models\Client::all(),
+            'currencies' => \App\Models\Currency::all(),
+            'skills' => \App\Models\Skill::all()
+        ]);
     }
 
     public function store(Request $request)
@@ -80,14 +93,14 @@ class JobController extends Controller
             'salary_to' => 'nullable|numeric'
         ]);
 
-        $data = $request->except('skills');
+        $data = $request->except(['skills', '_token', '_method']);
         $job = Job::create($data);
 
         // Generate dynamic job code: BJ-{category symbol}-{job type}-{id}
         $category = \App\Models\JobCategory::find($job->job_category_id);
         $jobType = \App\Models\JobType::find($job->job_type_id);
         
-        $catSymbol = $category->symbol ?: strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $category->name), 0, 3));
+        $catSymbol = $category ? ($category->symbol ?: strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $category->name), 0, 3))) : 'GEN';
         $typeLabel = $jobType ? strtoupper(substr($jobType->name, 0, 2)) : 'GEN';
         $serial = str_pad($job->id, 4, '0', STR_PAD_LEFT);
         
@@ -100,12 +113,26 @@ class JobController extends Controller
             $job->skills()->sync($skillIds);
         }
 
-        return response()->json($job->load('skills', 'client', 'currency', 'industryType', 'jobType', 'category'), 201);
+        return redirect()->route('jobs.index')->with('success', 'Created successfully!');
     }
 
     public function show(Job $job)
     {
-        return response()->json($job->load(['category', 'skills', 'client', 'currency', 'industryType', 'jobType']));
+        return redirect()->route('jobs.index')->with('success', 'Updated successfully!');
+    }
+
+    
+    public function edit(Job $job)
+    {
+        return view('admin.jobs.edit', [
+            'item' => $job,
+            'categories' => \App\Models\JobCategory::all(),
+            'industryTypes' => \App\Models\IndustryType::all(),
+            'jobTypes' => \App\Models\JobType::all(),
+            'clientsList' => \App\Models\Client::all(),
+            'currencies' => \App\Models\Currency::all(),
+            'skills' => \App\Models\Skill::all()
+        ]);
     }
 
     public function update(Request $request, Job $job)
@@ -128,7 +155,7 @@ class JobController extends Controller
             'salary_to' => 'nullable|numeric'
         ]);
 
-        $data = $request->except('skills');
+        $data = $request->except(['skills', '_token', '_method']);
         $job->update($data);
 
         // Update dynamic job code if category or type changed
@@ -148,13 +175,13 @@ class JobController extends Controller
             $job->skills()->sync($skillIds);
         }
 
-        return response()->json($job->load('skills', 'client', 'currency', 'industryType', 'jobType', 'category'));
+        return redirect()->route('jobs.index')->with('success', 'Updated successfully!');
     }
 
     public function destroy(Job $job)
     {
         $job->delete();
-        return response()->json(null, 204);
+        return redirect()->route('jobs.index')->with('success', 'Updated successfully!');
     }
 
     private function syncSkills(array $skills)

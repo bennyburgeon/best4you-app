@@ -10,7 +10,16 @@ class RoleController extends Controller
 {
     public function index()
     {
-        return response()->json(Role::with('permissions')->get());
+        return view('admin.roles.index', [
+            'items' => Role::with('permissions')->get(),
+            'permissions' => Permission::all()
+        ]);
+    }
+
+    
+    public function create()
+    {
+        return view('admin.roles.create');
     }
 
     public function store(Request $request)
@@ -26,12 +35,18 @@ class RoleController extends Controller
             $role->syncPermissions($request->permissions);
         }
 
-        return response()->json($role->load('permissions'), 201);
+        return redirect()->route('roles.index')->with('success', 'Created successfully!');
     }
 
     public function show(string $id)
     {
-        return response()->json(Role::with('permissions')->findOrFail($id));
+        return redirect()->route('roles.index')->with('success', 'Updated successfully!');
+    }
+
+    
+    public function edit(Role $role)
+    {
+        return view('admin.roles.edit', ['item' => $role]);
     }
 
     public function update(Request $request, string $id)
@@ -48,13 +63,13 @@ class RoleController extends Controller
             $role->syncPermissions($request->permissions);
         }
 
-        return response()->json($role->load('permissions'));
+        return redirect()->route('roles.index')->with('success', 'Updated successfully!');
     }
 
     public function destroy(string $id)
     {
         $role = Role::findOrFail($id);
         $role->delete();
-        return response()->json(null, 204);
+        return redirect()->route('roles.index')->with('success', 'Updated successfully!');
     }
 }

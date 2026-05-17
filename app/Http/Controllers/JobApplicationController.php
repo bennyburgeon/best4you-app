@@ -30,7 +30,13 @@ class JobApplicationController extends Controller
             });
         }
 
-        return response()->json($query->get());
+        return view('admin.job-applications.index', ['items' => $query->get()]);
+    }
+
+    
+    public function create()
+    {
+        return view('admin.job-applications.create');
     }
 
     public function store(Request $request)
@@ -51,8 +57,8 @@ class JobApplicationController extends Controller
             $application->addMediaFromRequest('resume')->toMediaCollection('resume', 's3');
         }
 
-        if ($request->wantsJson()) {
-            return response()->json($application, 201);
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Your application has been submitted successfully!']);
         }
 
         return redirect()->back()->with('success', 'Your application has been submitted successfully!');
@@ -62,6 +68,6 @@ class JobApplicationController extends Controller
     {
         $jobApplication->clearMediaCollection('resume');
         $jobApplication->delete();
-        return response()->json(null, 204);
+        return redirect()->route('job-applications.index')->with('success', 'Updated successfully!');
     }
 }

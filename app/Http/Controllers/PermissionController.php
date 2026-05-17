@@ -9,6 +9,6 @@ class PermissionController extends Controller
 {
     public function index()
     {
-        return response()->json(Permission::all());
+        return view('admin.permissions.index', ['items' => Permission::all()]);
     }
 }

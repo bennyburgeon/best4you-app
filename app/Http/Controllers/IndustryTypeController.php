@@ -9,7 +9,13 @@ class IndustryTypeController extends Controller
 {
     public function index()
     {
-        return response()->json(IndustryType::all());
+        return view('admin.industry-types.index', ['items' => IndustryType::all()]);
+    }
+
+    
+    public function create()
+    {
+        return view('admin.industry-types.create');
     }
 
     public function store(Request $request)
@@ -18,14 +24,20 @@ class IndustryTypeController extends Controller
             'name' => 'required|string|max:255|unique:industry_types'
         ]);
 
-        $industryType = IndustryType::create($request->all());
+        $industryType = IndustryType::create($request->only(['name']));
 
-        return response()->json($industryType, 201);
+        return redirect()->route('industry-types.index')->with('success', 'Created successfully!');
     }
 
     public function show(IndustryType $industryType)
     {
-        return response()->json($industryType);
+        return redirect()->route('industry-types.index')->with('success', 'Updated successfully!');
+    }
+
+    
+    public function edit(IndustryType $industryType)
+    {
+        return view('admin.industry-types.edit', ['item' => $industryType]);
     }
 
     public function update(Request $request, IndustryType $industryType)
@@ -34,14 +46,14 @@ class IndustryTypeController extends Controller
             'name' => 'required|string|max:255|unique:industry_types,name,' . $industryType->id
         ]);
 
-        $industryType->update($request->all());
+        $industryType->update($request->only(['name']));
 
-        return response()->json($industryType);
+        return redirect()->route('industry-types.index')->with('success', 'Updated successfully!');
     }
 
     public function destroy(IndustryType $industryType)
     {
         $industryType->delete();
-        return response()->json(null, 204);
+        return redirect()->route('industry-types.index')->with('success', 'Updated successfully!');
     }
 }

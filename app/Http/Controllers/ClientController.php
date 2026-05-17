@@ -10,7 +10,13 @@ class ClientController extends Controller
 {
     public function index()
     {
-        return response()->json(Client::all());
+        return view('admin.clients.index', ['items' => Client::all()]);
+    }
+
+    
+    public function create()
+    {
+        return view('admin.clients.create');
     }
 
     public function store(Request $request)
@@ -30,7 +36,7 @@ class ClientController extends Controller
             'hr_email' => 'nullable|email'
         ]);
 
-        $data = $request->except('logo');
+        $data = $request->except(['logo', '_token', '_method']);
 
         $client = Client::create($data);
 
@@ -38,20 +44,24 @@ class ClientController extends Controller
             $client->addMediaFromRequest('logo')->toMediaCollection('logo', 's3');
         }
 
-        if ($request->wantsJson()) {
-            return response()->json($client, 201);
-        }
+        
 
         return redirect()->route('clients.index')->with('success', 'Client created successfully');
     }
 
     public function show(Client $client)
     {
-        return response()->json($client);
+        return redirect()->route('clients.index')->with('success', 'Updated successfully!');
     }
 
     // Since we are using FormData in Vue, PUT requests with files might be tricky.
     // It's common to handle it using POST with _method=PUT.
+    
+    public function edit(Client $client)
+    {
+        return view('admin.clients.edit', ['item' => $client]);
+    }
+
     public function update(Request $request, Client $client)
     {
         $request->merge([
@@ -69,7 +79,7 @@ class ClientController extends Controller
             'hr_email' => 'nullable|email'
         ]);
 
-        $data = $request->except('logo');
+        $data = $request->except(['logo', '_token', '_method']);
         $client->update($data);
 
         if ($request->hasFile('logo')) {
@@ -79,9 +89,7 @@ class ClientController extends Controller
             $client->clearMediaCollection('logo');
         }
 
-        if ($request->wantsJson()) {
-            return response()->json($client);
-        }
+        
 
         return redirect()->route('clients.index')->with('success', 'Client updated successfully');
     }
@@ -90,6 +98,6 @@ class ClientController extends Controller
     {
         $client->clearMediaCollection('logo');
         $client->delete();
-        return response()->json(null, 204);
+        return redirect()->route('clients.index')->with('success', 'Updated successfully!');
     }
 }

@@ -9,7 +9,13 @@ class CurrencyController extends Controller
 {
     public function index()
     {
-        return response()->json(Currency::all());
+        return view('admin.currencies.index', ['items' => Currency::all()]);
+    }
+
+    
+    public function create()
+    {
+        return view('admin.currencies.create');
     }
 
     public function store(Request $request)
@@ -21,13 +27,19 @@ class CurrencyController extends Controller
         ]);
 
         $currency = Currency::create($data);
-        return response()->json($currency, 201);
+        return redirect()->route('currencies.index')->with('success', 'Created successfully!');
     }
 
     public function show(string $id)
     {
         $currency = Currency::findOrFail($id);
-        return response()->json($currency);
+        return redirect()->route('currencies.index')->with('success', 'Updated successfully!');
+    }
+
+    
+    public function edit(Currency $currency)
+    {
+        return view('admin.currencies.edit', ['item' => $currency]);
     }
 
     public function update(Request $request, string $id)
@@ -40,13 +52,13 @@ class CurrencyController extends Controller
 
         $currency = Currency::findOrFail($id);
         $currency->update($data);
-        return response()->json($currency);
+        return redirect()->route('currencies.index')->with('success', 'Updated successfully!');
     }
 
     public function destroy(string $id)
     {
         $currency = Currency::findOrFail($id);
         $currency->delete();
-        return response()->json(null, 204);
+        return redirect()->route('currencies.index')->with('success', 'Updated successfully!');
     }
 }

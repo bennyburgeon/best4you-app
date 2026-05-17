@@ -9,7 +9,13 @@ class JobCategoryController extends Controller
 {
     public function index()
     {
-        return response()->json(JobCategory::with('parent')->get());
+        return view('admin.job-categories.index', ['items' => JobCategory::with('parent')->get()]);
+    }
+
+    
+    public function create()
+    {
+        return view('admin.job-categories.create', ['categories' => JobCategory::all()]);
     }
 
     public function store(Request $request)
@@ -19,12 +25,18 @@ class JobCategoryController extends Controller
             'symbol' => 'nullable|string|max:10'
         ]);
         $category = JobCategory::create($request->only('name', 'symbol', 'parent_category_id'));
-        return response()->json($category, 201);
+        return redirect()->route('job-categories.index')->with('success', 'Created successfully!');
     }
 
     public function show(JobCategory $jobCategory)
     {
-        return response()->json($jobCategory->load('parent'));
+        return redirect()->route('job-categories.index')->with('success', 'Updated successfully!');
+    }
+
+    
+    public function edit(JobCategory $jobCategory)
+    {
+        return view('admin.job-categories.edit', ['item' => $jobCategory, 'categories' => JobCategory::where('id', '!=', $jobCategory->id)->get()]);
     }
 
     public function update(Request $request, JobCategory $jobCategory)
@@ -34,12 +46,12 @@ class JobCategoryController extends Controller
             'symbol' => 'nullable|string|max:10'
         ]);
         $jobCategory->update($request->only('name', 'symbol', 'parent_category_id'));
-        return response()->json($jobCategory);
+        return redirect()->route('job-categories.index')->with('success', 'Updated successfully!');
     }
 
     public function destroy(JobCategory $jobCategory)
     {
         $jobCategory->delete();
-        return response()->json(null, 204);
+        return redirect()->route('job-categories.index')->with('success', 'Updated successfully!');
     }
 }
